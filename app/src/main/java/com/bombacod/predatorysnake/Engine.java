@@ -42,4 +42,13 @@ public class Engine extends Thread{
             }
         }
     }
+
+
+    public void left(){
+        model.left();
+    }
+
+    public void right(){
+        model.right();
+    }
 }

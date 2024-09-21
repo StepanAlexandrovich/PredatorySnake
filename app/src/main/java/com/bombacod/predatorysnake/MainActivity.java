@@ -1,9 +1,6 @@
 package com.bombacod.predatorysnake;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,6 +21,17 @@ public class MainActivity extends AppCompatActivity {
         public DrawView(Context context) {
             super(context);
             getHolder().addCallback(this);
+
+            setOnTouchListener((view, motionEvent) -> {
+
+                float x = motionEvent.getX();
+                //float y = motionEvent.getY();
+
+                if(x < this.getWidth()/2){ engine.left();  }
+                else                     { engine.right(); }
+
+                return  false;
+            });
         }
 
         @Override
@@ -52,5 +60,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
+
     }
 }

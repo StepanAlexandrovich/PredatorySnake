@@ -9,6 +9,6 @@ public class Render {
 
     public void draw(Canvas canvas,Model model){
         canvas.drawColor(Color.GREEN);
-        canvas.drawRect(model.getValue(),model.getValue(),model.getValue() + 50,model.getValue() + 50,paint);
+        canvas.drawRect(model.getValue(),0,model.getValue() + 50,50,paint);
     }
 }
