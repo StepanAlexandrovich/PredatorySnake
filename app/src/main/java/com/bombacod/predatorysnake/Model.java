@@ -18,6 +18,15 @@ public class Model {
         return matrix;
     }
 
+    //
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
     // control
     public void right(){
         vector++;

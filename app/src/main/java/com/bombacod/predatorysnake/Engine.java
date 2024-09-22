@@ -9,7 +9,7 @@ public class Engine extends Thread{
 
     //////////////////////////////
     private Model model = new Model();
-    private Render render = new Render();
+    private Render render = new Render(model.getWidth(),model.getHeight()); // перед
     ////////////////////////////////
 
     public Engine(SurfaceHolder surfaceHolder) {
