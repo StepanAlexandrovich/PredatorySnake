@@ -1,22 +1,47 @@
 package com.bombacod.predatorysnake;
 
+import com.bombacod.predatorysnake.bubbles.Generator;
+import com.bombacod.predatorysnake.bubbles.Matrix;
+import com.bombacod.predatorysnake.bubbles.Point;
+
 public class Model {
-    private  int value = 0;
-    private int vector = 1;
+    private int width = 100,height = 100;
 
-    public int getValue() {
-        return value;
+    private Matrix matrix = new Matrix(width,height);
+    private Generator generator = new Generator(matrix.getPoints());
+    private Point point = matrix.getPoint(width/2,height/2);
+
+    private int vector = 4;
+    private int step = 0;
+
+    public Matrix getMatrix() {
+        return matrix;
     }
 
-    public void left(){
-        vector = -1;
-    }
-
+    // control
     public void right(){
-        vector = 1;
+        vector++;
+        if(vector == 5){ vector = 1; }
+    }
+    public void left(){
+        vector--;
+        if(vector == 0){ vector = 4; }
     }
 
+    ///////////////////////////////////
     public void process(){
-        value += vector;
+        step++;
+
+        // controlled point
+        point = point.points[vector];
+
+        if(step%2 == 0){
+            point.setType(step);
+            point.setValue(2000);
+        }
+
+        // bubbles
+        for(Point point:matrix.getPoints()){ point.process(); }
+        generator.process();
     }
 }
