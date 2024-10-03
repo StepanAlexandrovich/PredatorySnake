@@ -5,10 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import com.bombacod.predatorysnake.bubbles.Matrix;
-import com.bombacod.predatorysnake.bubbles.Point;
-
-import java.util.Map;
+import com.bombacod.predatorysnake.matrix.Matrix;
+import com.bombacod.predatorysnake.matrix.Point;
 
 public class Render {
     private Paint paint;
@@ -26,10 +24,10 @@ public class Render {
     }
 
     public void draw(Canvas canvas,Model model){
-        Matrix matrix = model.getMatrix();
+        Matrix bubblesMatrix = model.getBubblesMatrix();
         int bright = 1;
 
-        for(Point point: matrix.getPoints()){
+        for(Point point: bubblesMatrix.getPoints()){
             int value = border(point.getValue()*bright);
             // материя
             if(value >0)  { bitmap.setPixel(point.x,point.y,Color.argb(255,0,value,value)); } else

@@ -1,5 +1,7 @@
 package com.bombacod.predatorysnake.bubbles;
 
+import com.bombacod.predatorysnake.matrix.Point;
+
 public class Generator {
     private Point[] points;
     //////////

@@ -1,6 +1,6 @@
-package com.bombacod.predatorysnake.bubbles;
+package com.bombacod.predatorysnake.matrix;
 
-public class Matrix {
+public abstract class Matrix {
     private Point[] points;
     private int width,height,length;
 
@@ -9,7 +9,7 @@ public class Matrix {
 
         points = new Point[length];
         for(int i = 0;i<length;i++){
-            points[i] = new Point();
+            points[i] = createPoint();
         }
 
         for(int y = 0;y<height;y++){
@@ -28,6 +28,8 @@ public class Matrix {
         }
 
     }
+
+    public abstract Point createPoint();
 
     ///////////// getPoint() /////////////////
     public int ring(int vel,int min,int max){

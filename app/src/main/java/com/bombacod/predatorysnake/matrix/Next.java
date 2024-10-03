@@ -1,11 +1,11 @@
-package com.bombacod.predatorysnake.bubbles;
+package com.bombacod.predatorysnake.matrix;
 
-public class Next {
+public abstract class Next {
     public final int[] table = {1,0};
-    // dinamic
+    // dynamic
     public int now = 0,next=table[now];
 
-    public void next(){}
+    public abstract void next();
 
     public void process(){
         next();

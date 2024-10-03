@@ -1,25 +1,8 @@
 package com.bombacod.predatorysnake.bubbles;
 
-public class Point extends Next{
-    // final
-    public int x,y;
-    public Point[] points = new Point[5]; // 0 - in place; 1 - right; 2 - down; 3 - left; 4 - up;
-    // dynamic
-    private int[] value = new int[2];
-    private int[] type = new int[2];
+import com.bombacod.predatorysnake.matrix.Point;
 
-    //// getSet ////
-    public int getValue()   { return value[now]; }
-    public void setValue(int v) { value[now]  = v; }
-    public void addValue(int v) {
-        value[now] += v;
-        if(value[now]<0){ value[now] = 0; }
-    }
-
-    public int getType()   { return type[now]; }
-    public void setType(int v){ type[now] = v; }
-
-
+public class PointImpl extends Point {
     public void heart(){
         value[next] = value[now];
         type[next] = type[now];
@@ -46,6 +29,7 @@ public class Point extends Next{
         if(value[next]==0){ type[next] = 0; }
     }
 
+    // переделать
     private void decrease(){
         if(type[next]==0&&value[next]>000){
             value[next]--;
@@ -59,4 +43,5 @@ public class Point extends Next{
         heart();
         decrease();
     }
+
 }
