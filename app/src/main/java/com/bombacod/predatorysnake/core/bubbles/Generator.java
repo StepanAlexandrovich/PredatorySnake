@@ -1,6 +1,6 @@
-package com.bombacod.predatorysnake.bubbles;
+package com.bombacod.predatorysnake.core.bubbles;
 
-import com.bombacod.predatorysnake.matrix.Point;
+import com.bombacod.predatorysnake.core.matrix.Point;
 
 public class Generator {
     private Point[] points;

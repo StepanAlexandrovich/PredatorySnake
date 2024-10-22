@@ -1,7 +1,7 @@
-package com.bombacod.predatorysnake.bubbles;
+package com.bombacod.predatorysnake.core.bubbles;
 
-import com.bombacod.predatorysnake.matrix.Matrix;
-import com.bombacod.predatorysnake.matrix.Point;
+import com.bombacod.predatorysnake.core.matrix.Matrix;
+import com.bombacod.predatorysnake.core.matrix.Point;
 
 public class Bubbles {
     private int width,height;
@@ -29,7 +29,7 @@ public class Bubbles {
 
     ////////////////////////
     public void process(){
-        for(Point point:matrix.getPoints()){ point.process(); }
+        for(Point point:matrix.getPoints()){ point.processNext(); }
         generator.process();
     }
 

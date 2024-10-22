@@ -1,8 +1,8 @@
-package com.bombacod.predatorysnake.matrix;
+package com.bombacod.predatorysnake.core.matrix;
 
 public abstract class Point extends Next{
-    // final
-    public int x,y;
+    // do it final
+    public int x,y,index;
     public Point[] points = new Point[5]; // 0 - in place; 1 - right; 2 - down; 3 - left; 4 - up;
 
     // dynamic
@@ -12,9 +12,31 @@ public abstract class Point extends Next{
     //// getSet ////
     public int getValue()   { return value[now]; }
     public void setValue(int v) { value[now]  = v; }
+    public void setValueNext(int v) { value[next]  = v; }
 
     public int getType()   { return type[now]; }
     public void setType(int v){ type[now] = v; }
+
+    public void addValue(int v) {
+        value[now] += v;
+    }
+    public void addValueNext(int v) {
+        value[next] += v;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void reset(){
+        value[now] = 0;
+        type[now] = 0;
+    }
+
+    public void resetNext(){
+        value[next] = 0;
+        type[next] = 0;
+    }
 
     // change vector
     public static int right(int vector){

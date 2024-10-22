@@ -3,13 +3,15 @@ package com.bombacod.predatorysnake;
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
+import com.bombacod.predatorysnake.core.Model;
+
 public class Engine extends Thread{
     private SurfaceHolder surfaceHolder;
     private boolean running = false;
 
     //////////////////////////////
-    private Model model = new Model();
-    private Render render = new Render(model.getWidth(),model.getHeight()); // перед
+    private Model model = new Model(101,101);
+    private Render render = new Render(model);
     ////////////////////////////////
 
     public Engine(SurfaceHolder surfaceHolder) {

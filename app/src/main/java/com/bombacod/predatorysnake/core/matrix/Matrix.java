@@ -1,4 +1,4 @@
-package com.bombacod.predatorysnake.matrix;
+package com.bombacod.predatorysnake.core.matrix;
 
 public abstract class Matrix {
     private Point[] points;
@@ -12,9 +12,11 @@ public abstract class Matrix {
             points[i] = createPoint();
         }
 
+        int index = 0;
         for(int y = 0;y<height;y++){
             for(int x = 0;x<width;x++){
                 // задаём точке координаты
+                getPoint(x,y).index = index++;
                 getPoint(x,y).x = x;
                 getPoint(x,y).y = y;
 
@@ -38,6 +40,10 @@ public abstract class Matrix {
         return vel;
     }
 
+    public Point getPoint(int index){
+        return points[index];
+    }
+
     public Point getPoint(int x,int y){
         return points[width*ring(y,0,height - 1) + ring(x,0,width - 1)];
     }
@@ -46,7 +52,6 @@ public abstract class Matrix {
         return getPoint(width/2+a,height/2+b);
     }
     //////////////////////////////////////////////////
-
 
     public int getWidth() {
         return width;
@@ -62,5 +67,26 @@ public abstract class Matrix {
 
     public Point[] getPoints() {
         return points;
+    }
+
+    ////////////////////////////////////////
+    public Matrix reset(){
+        for (Point point : points) {
+            point.reset();
+        }
+        return this;
+    }
+
+    public Matrix fillMatrix(int value){
+        for (Point point : points) {
+            point.setValue(value);
+        }
+        return this;
+    }
+
+    public void processNext(){
+        for (Point point : points) {
+            point.processNext();
+        }
     }
 }

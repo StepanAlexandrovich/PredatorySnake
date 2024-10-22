@@ -1,6 +1,6 @@
-package com.bombacod.predatorysnake.bubbles;
+package com.bombacod.predatorysnake.core.bubbles;
 
-import com.bombacod.predatorysnake.matrix.Point;
+import com.bombacod.predatorysnake.core.matrix.Point;
 
 public class PointImpl extends Point {
     public void heart(){
@@ -39,7 +39,7 @@ public class PointImpl extends Point {
     }
 
     @Override
-    public void next(){
+    public void process(){
         heart();
         decrease();
     }
