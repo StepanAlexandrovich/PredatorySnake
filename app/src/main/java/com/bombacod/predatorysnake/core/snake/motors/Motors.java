@@ -27,7 +27,7 @@ public class Motors {
     }
 
     public void start(int x,int y, int value,int type){
-        Point point = snakeData.getMatrixMotors().getPointCenter(x,y);
+        Point point = snakeData.getMatrixMotors().getPoint(x,y);
         point.setType(type);
         point.setValue(value);
     }

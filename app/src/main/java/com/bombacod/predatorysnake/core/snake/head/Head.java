@@ -16,14 +16,15 @@ public class Head {
         this.snakeData = snakeData;
         this.length = snakeData.getLength();
 
-        generator = new Generator(snakeData).setPower(1600);
+        generator = new Generator(snakeData).setPower(3000);
+
         coefficientsImpactMotors = new double[800];
 
         decrease = new Decrease(snakeData);
     }
 
     public void start(int x,int y, int value,int type){
-        Point point = snakeData.getMatrixHead().getPointCenter(x, y);
+        Point point = snakeData.getMatrixHead().getPoint(x, y);
 
         point.setValue(value);
         point.setType(type);
@@ -49,14 +50,19 @@ public class Head {
         decrease.process();
     }
 
+    public void directly(){
+        coefficientsImpactMotors[snakeData.getTypeMotor1()] = 1.0;
+        coefficientsImpactMotors[snakeData.getTypeMotor2()] = 1.0;
+    }
+
     public void right(){
-        coefficientsImpactMotors[snakeData.getTypeMotor1()] = 0.5;
-        coefficientsImpactMotors[snakeData.getTypeMotor2()] = 0.1;
+        coefficientsImpactMotors[snakeData.getTypeMotor1()] = 1.5;
+        coefficientsImpactMotors[snakeData.getTypeMotor2()] = 0.3;
     }
 
     public void left(){
-        coefficientsImpactMotors[snakeData.getTypeMotor1()] = 0.1;
-        coefficientsImpactMotors[snakeData.getTypeMotor2()] = 0.5;
+        coefficientsImpactMotors[snakeData.getTypeMotor1()] = 0.3;
+        coefficientsImpactMotors[snakeData.getTypeMotor2()] = 1.5;
     }
 
 }

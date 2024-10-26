@@ -7,16 +7,34 @@ import android.graphics.Paint;
 
 import com.bombacod.predatorysnake.core.Model;
 import com.bombacod.predatorysnake.core.matrix.Matrix;
+import com.bombacod.predatorysnake.core.matrix.Point;
 import com.bombacod.predatorysnake.core.snake.Snake;
 import com.bombacod.predatorysnake.core.test.Turn;
+
+import java.util.HashMap;
 
 public class Render {
     private Paint paint;
     private Bitmap bitmap;
 
+    private HashMap<Integer,double[]> typeColorsIdentity0;
+
     public Render(Model model) {
         paint = new Paint();
         bitmap = Bitmap.createBitmap(model.getWidth(),model.getHeight(),Bitmap.Config.RGB_565);
+
+        typeColorsIdentity0 = new HashMap<>();
+        //typeColors.put(0,new double[]{0.0,0.0,1.0});
+        typeColorsIdentity0.put(1,new double[]{1.0,1.0,1.0});
+        typeColorsIdentity0.put(2,new double[]{1.0,0.0,1.0});
+        typeColorsIdentity0.put(3,new double[]{0.5,0.0,1.0});
+        typeColorsIdentity0.put(4,new double[]{1.0,0.3,0.3});
+        typeColorsIdentity0.put(5,new double[]{1.0,0.5,0.5});
+        typeColorsIdentity0.put(6,new double[]{0.6,0.0,1.0});
+        typeColorsIdentity0.put(7,new double[]{1.0,0.7,0.4});
+        typeColorsIdentity0.put(8,new double[]{1.0,1.0,0.0});
+        typeColorsIdentity0.put(9,new double[]{1.0,0.0,1.0});
+        typeColorsIdentity0.put(10,new double[]{0.5,0.5,1.0});
     }
 
     private int border(int value){
@@ -40,8 +58,11 @@ public class Render {
             if(snakeTest.isSnake(i)){
                 bitmap.setPixel(x,y, drawSnakeTest(snakeTest,i,10));
             }else
+            if(model.getMatrices().getMatrixIdentity0().getPoint(i).getValue() >0){
+                bitmap.setPixel(x,y, drawBubbles(model.getMatrices().getMatrixIdentity0(),i,10));
+            }else
             if(true){
-                bitmap.setPixel(x,y,drawTrack(model.getMatrices().getMatrixTrack(),i,1));
+                bitmap.setPixel(x,y,drawTrack(model.getMatrices().getMatrixTrack(),i,0.5));
             }
         }
 
@@ -50,7 +71,7 @@ public class Render {
         canvas.drawBitmap(bitmapMultiplication,0,0,paint);
 
         // test
-        symmetryTest(canvas,model.getMatrices().getMatrixIdentity1());
+        //symmetryTest(canvas,model.getMatrices().getMatrixIdentity1());
     }
 
     private int drawSnake(Snake snake, int i, int bright){
@@ -67,9 +88,21 @@ public class Render {
         }
     }
 
-    private int drawTrack(Matrix matrixTrack,int i,int bright){
+    private int drawBubbles(Matrix matrix, int i, int bright){
+        Point point = matrix.getPoint(i);
+
+        int value = point.getValue();
+        value = border(value * bright);
+
+        double[] doubles = typeColorsIdentity0.get(point.getType());
+
+        return Color.argb(255,(int)(value*doubles[0]),(int)(value*doubles[1]),(int)(value*doubles[2]));
+    }
+
+    private int drawTrack(Matrix matrixTrack,int i,double bright){
         int track = matrixTrack.getPoint(i).getValue();
-        track = border(track * bright);
+        track = border((int)(track * bright));
+        if(track > 0){ track = track * 2; }
         return Color.argb(255,000,000,track);
     }
 

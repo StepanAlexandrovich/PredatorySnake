@@ -81,6 +81,7 @@ public class SnakeData {
     }
 
     public boolean isMotors(int index){ return isMotor1(index) || isMotor2(index); }
-    public boolean isSnake(int index){ return isHead(index) || isMotors(index); }
+//    public boolean isSnake(int index){ return isHead(index) || isMotors(index); }
+    public boolean isSnake(int index){ return isMotors(index); }
 
 }

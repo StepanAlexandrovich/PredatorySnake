@@ -8,11 +8,20 @@ public class Generator {
     private int length = 2000;
     private int[] massOfType = new int[length];
     private int[] generation = new int[length];
+    private boolean[] isTypes = new boolean[length];
 
-    private int power = 1000;
-    private int hCore = 100;
+    private int power = 2000;
+    private int hCore = 400;
 
     public Generator(Point[] points){ this.points = points; }
+
+    public void addType(int type){
+        isTypes[type] = true;
+    }
+
+    public void deleteType(int type){
+        isTypes[type] = false;
+    }
 
     public void process(){
         for(int i = 0;i<length;i++){
@@ -21,7 +30,7 @@ public class Generator {
         }
 
         for(Point point:points){
-            if(point.getValue()>hCore){
+            if(point.getValue()>hCore && isTypes[point.getType()]){ // in function
                 massOfType[point.getType()]+=1;
             }
         }
@@ -33,7 +42,7 @@ public class Generator {
         }
 
         for(Point point:points){
-            if(point.getValue()>hCore){
+            if(point.getValue()>hCore && isTypes[point.getType()]){
                 point.setValue(point.getValue()+generation[point.getType()]);
             }
         }

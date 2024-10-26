@@ -24,7 +24,7 @@ class Generator {
     }
 
     private boolean isCorePoint(int i){
-        if(snakeData.isHead(i) && !snakeData.isMotors(i) && snakeData.getPointHead(i).getValue() > 300){
+        if(snakeData.isHead(i) && !snakeData.isMotors(i) && snakeData.getPointHead(i).getValue() > 400){
             return true;
         }
         return false;
