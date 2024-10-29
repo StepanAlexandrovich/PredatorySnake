@@ -1,10 +1,11 @@
-package com.bombacod.predatorysnake;
+package com.bombacod.predatorysnake.visualization;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import com.bombacod.predatorysnake.SpeedMeasurement;
 import com.bombacod.predatorysnake.core.Model;
 import com.bombacod.predatorysnake.core.matrix.Matrix;
 import com.bombacod.predatorysnake.core.matrix.Point;
@@ -16,25 +17,22 @@ import java.util.HashMap;
 public class Render {
     private Paint paint;
     private Bitmap bitmap;
+    private Text text;
 
     private HashMap<Integer,double[]> typeColorsIdentity0;
+    private CoefficientsIdentity0 identity0;
+
+    // test
+    private SpeedMeasurement speedMeasurement;
 
     public Render(Model model) {
         paint = new Paint();
         bitmap = Bitmap.createBitmap(model.getWidth(),model.getHeight(),Bitmap.Config.RGB_565);
+        text = new Text();
 
-        typeColorsIdentity0 = new HashMap<>();
-        //typeColors.put(0,new double[]{0.0,0.0,1.0});
-        typeColorsIdentity0.put(1,new double[]{1.0,1.0,1.0});
-        typeColorsIdentity0.put(2,new double[]{1.0,0.0,1.0});
-        typeColorsIdentity0.put(3,new double[]{0.5,0.0,1.0});
-        typeColorsIdentity0.put(4,new double[]{1.0,0.3,0.3});
-        typeColorsIdentity0.put(5,new double[]{1.0,0.5,0.5});
-        typeColorsIdentity0.put(6,new double[]{0.6,0.0,1.0});
-        typeColorsIdentity0.put(7,new double[]{1.0,0.7,0.4});
-        typeColorsIdentity0.put(8,new double[]{1.0,1.0,0.0});
-        typeColorsIdentity0.put(9,new double[]{1.0,0.0,1.0});
-        typeColorsIdentity0.put(10,new double[]{0.5,0.5,1.0});
+        identity0 = new CoefficientsIdentity0();
+        // test
+        speedMeasurement = new SpeedMeasurement(1000);
     }
 
     private int border(int value){
@@ -42,6 +40,7 @@ public class Render {
         if(value>+255) { value = +255; }
         return value;
     }
+
     public void draw(Canvas canvas, Model model){
         Snake snake = model.getSnake();
         Snake snakeTest = model.getSnakeTest();
@@ -72,6 +71,8 @@ public class Render {
 
         // test
         //symmetryTest(canvas,model.getMatrices().getMatrixIdentity1());
+        speedMeasurement.process();
+        text.drawText(speedMeasurement.getDifferenceText(),50,120,100,Color.RED,canvas);
     }
 
     private int drawSnake(Snake snake, int i, int bright){
@@ -91,12 +92,14 @@ public class Render {
     private int drawBubbles(Matrix matrix, int i, int bright){
         Point point = matrix.getPoint(i);
 
-        int value = point.getValue();
-        value = border(value * bright);
+        int type = point.getType();
+        int value = border(point.getValue() * bright);
 
-        double[] doubles = typeColorsIdentity0.get(point.getType());
+        double red = identity0.red(type);
+        double green = identity0.green(type);
+        double blue = identity0.blue(type);
 
-        return Color.argb(255,(int)(value*doubles[0]),(int)(value*doubles[1]),(int)(value*doubles[2]));
+        return Color.argb(255,(int)(value*red),(int)(value*green),(int)(value*blue));
     }
 
     private int drawTrack(Matrix matrixTrack,int i,double bright){

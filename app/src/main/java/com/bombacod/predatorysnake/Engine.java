@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
 import com.bombacod.predatorysnake.core.Model;
+import com.bombacod.predatorysnake.visualization.Render;
 
 public class Engine extends Thread{
     private SurfaceHolder surfaceHolder;
