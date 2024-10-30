@@ -23,9 +23,9 @@ public class TestVisualization {
         paint.setColor(Color.BLACK);
         canvas.drawRect(0,side,side,side + 300,paint);
 
-        symmetryTest(canvas,model.getMatrices().getMatrixIdentity1());
-        //timerTest(canvas,side);
-        //speedTestRendering(canvas,side);
+//        symmetryTest(canvas,model.getMatrices().getMatrixIdentity1());
+//        timerTest(canvas,side);
+//        speedTestRendering(canvas,side);
         speedTestModel(canvas,model,side);
     }
 

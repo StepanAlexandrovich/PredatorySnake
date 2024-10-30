@@ -12,6 +12,8 @@ public class Model {
     private Bubbles bubbles;
 
     private int step = 0;
+
+    // test
     public SpeedMeasurement speedMeasurement= new SpeedMeasurement(1000);
 
     public Model(int width, int height) {

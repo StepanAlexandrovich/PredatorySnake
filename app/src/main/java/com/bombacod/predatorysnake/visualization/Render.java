@@ -19,9 +19,8 @@ public class Render {
 
     private TestVisualization test = new TestVisualization();
 
-    public Render(Model model) {
+    public Render() { // избавиться
         paint = new Paint();
-        bitmap = Bitmap.createBitmap(model.getWidth(),model.getHeight(),Bitmap.Config.RGB_565);
         text = new Text();
 
         identity0 = new CoefficientsIdentity0();
@@ -34,6 +33,10 @@ public class Render {
     }
 
     public void draw(Canvas canvas, Model model){
+        if(bitmap == null){
+            bitmap = Bitmap.createBitmap(model.getWidth(),model.getHeight(),Bitmap.Config.RGB_565);
+        }
+
         Snake snake = model.getSnake();
         Snake snakeTest = model.getSnakeTest();
 

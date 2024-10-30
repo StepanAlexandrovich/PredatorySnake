@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     class DrawView extends SurfaceView implements SurfaceHolder.Callback {
-        private Engine engine;
+        private LoopMain loop;
 
         public DrawView(Context context) {
             super(context);
@@ -27,8 +27,8 @@ public class MainActivity extends AppCompatActivity {
                 float x = motionEvent.getX();
                 //float y = motionEvent.getY();
 
-                if(x < this.getWidth()/2){ engine.left();  }
-                else                     { engine.right(); }
+                if(x < this.getWidth()/2){ loop.left();  }
+                else                     { loop.right(); }
 
                 return  false;
             });
@@ -36,9 +36,9 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
-            engine = new Engine(getHolder());
-            engine.setRunning(true);
-            engine.start();
+            loop = new LoopMain(getHolder());
+            loop.setRunning(true);
+            loop.start();
         }
 
         @Override
@@ -47,12 +47,12 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void surfaceDestroyed(@NonNull SurfaceHolder surfaceHolder) {
-            boolean retry = false;
-            engine.setRunning(false);
+            boolean retry = true;
+            loop.setRunning(false);
             while (retry){
 
                 try {
-                    engine.join();
+                    loop.join();
                     retry = false;
                 } catch (InterruptedException e) {
                     e.printStackTrace();

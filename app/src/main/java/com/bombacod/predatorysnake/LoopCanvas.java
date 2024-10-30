@@ -6,18 +6,23 @@ import android.view.SurfaceHolder;
 import com.bombacod.predatorysnake.core.Model;
 import com.bombacod.predatorysnake.visualization.Render;
 
-public class Engine extends Thread{
+public class LoopCanvas extends Thread{
     private SurfaceHolder surfaceHolder;
     private boolean running = false;
 
     //////////////////////////////
-    private Model model = new Model(101,101);
-    private Render render = new Render(model);
-    private SimpleTimer timer = new SimpleTimer(250);
+    private Model model;
+    private Render render;
     ////////////////////////////////
 
-    public Engine(SurfaceHolder surfaceHolder) {
+    public void drawing(Model model) {
+        this.model = model; // переделать
+    }
+
+    public LoopCanvas(SurfaceHolder surfaceHolder) {
         this.surfaceHolder = surfaceHolder;
+
+        render = new Render();
     }
 
     public void setRunning(boolean running) {
@@ -35,10 +40,9 @@ public class Engine extends Thread{
                 if(canvas == null){ continue; }
 
                 ////////////////////////////
-                if(timer.process()){ // fps
-                    model.process();
+                if(model != null){
+                    render.draw(canvas,model);
                 }
-                render.draw(canvas,model);
                 ////////////////////////////
 
             }finally {
@@ -47,13 +51,6 @@ public class Engine extends Thread{
                 }
             }
         }
-    }
-
-    public void left(){
-        model.left();
-    }
-    public void right(){
-        model.right();
     }
 
 }
