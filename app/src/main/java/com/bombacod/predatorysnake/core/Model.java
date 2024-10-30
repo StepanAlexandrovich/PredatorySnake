@@ -1,5 +1,6 @@
 package com.bombacod.predatorysnake.core;
 
+import com.bombacod.predatorysnake.SpeedMeasurement;
 import com.bombacod.predatorysnake.core.bubbles.Bubbles;
 import com.bombacod.predatorysnake.core.matrices.Matrices;
 import com.bombacod.predatorysnake.core.snake.Snake;
@@ -11,6 +12,7 @@ public class Model {
     private Bubbles bubbles;
 
     private int step = 0;
+    public SpeedMeasurement speedMeasurement= new SpeedMeasurement(1000);
 
     public Model(int width, int height) {
         matrices = new Matrices(width,height);
@@ -21,6 +23,7 @@ public class Model {
 
     // get
     public Matrices getMatrices() { return matrices; }
+    public int getStep() { return step; }
 
     // encapsulation
     public int getLength(){ return matrices.getLength(); }
@@ -47,6 +50,7 @@ public class Model {
 
     ///////////////////////////////////
     public void process(){
+        speedMeasurement.process();
         step++;
 
         if(step==1){

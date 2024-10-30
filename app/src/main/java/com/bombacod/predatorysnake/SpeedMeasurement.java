@@ -1,36 +1,37 @@
 package com.bombacod.predatorysnake;
 
 public class SpeedMeasurement {
-    private long distance;
-    private long lastTime,nowTime;
+    private int step,speed;
 
-    private int stepNow,stepLast;
-    private int difference;
+    private SimpleTimer simpleTimer;
 
     public SpeedMeasurement(long distance) {
-        this.distance = distance;
+        simpleTimer = new SimpleTimer(distance);
+    }
+
+    public void reset(){
+        step = 0;
+        simpleTimer.reset();
     }
 
     // get
-    public int getDifference() {
-        return difference;
+    public int getSpeed() {
+        return speed;
     }
-    public String getDifferenceText() {
-        return "" + difference;
+    public String getSpeedText() {
+        return "" + speed;
     }
 
     ////////////
-    public void process(){
-        stepNow++;
-        nowTime = System.currentTimeMillis();
-        if(stepNow == 1){ lastTime = nowTime; } // для идеального старта на практике необязательно
+    public int process(){
+        step++;
 
-        if(nowTime - lastTime > distance){
-            difference = stepNow - stepLast;
-
-            lastTime = nowTime;
-            stepLast = stepNow;
+        if(simpleTimer.process()){
+            speed = step;
+            step = 0;
         }
+
+        return speed;
     }
 
 }

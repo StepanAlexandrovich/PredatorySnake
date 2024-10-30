@@ -13,6 +13,7 @@ public class Engine extends Thread{
     //////////////////////////////
     private Model model = new Model(101,101);
     private Render render = new Render(model);
+    private SimpleTimer timer = new SimpleTimer(250);
     ////////////////////////////////
 
     public Engine(SurfaceHolder surfaceHolder) {
@@ -34,7 +35,9 @@ public class Engine extends Thread{
                 if(canvas == null){ continue; }
 
                 ////////////////////////////
-                model.process();
+                if(timer.process()){ // fps
+                    model.process();
+                }
                 render.draw(canvas,model);
                 ////////////////////////////
 
@@ -46,12 +49,11 @@ public class Engine extends Thread{
         }
     }
 
-
     public void left(){
         model.left();
     }
-
     public void right(){
         model.right();
     }
+
 }

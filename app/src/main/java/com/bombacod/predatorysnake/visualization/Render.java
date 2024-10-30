@@ -5,25 +5,19 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import com.bombacod.predatorysnake.SpeedMeasurement;
 import com.bombacod.predatorysnake.core.Model;
 import com.bombacod.predatorysnake.core.matrix.Matrix;
 import com.bombacod.predatorysnake.core.matrix.Point;
 import com.bombacod.predatorysnake.core.snake.Snake;
-import com.bombacod.predatorysnake.core.test.Turn;
-
-import java.util.HashMap;
 
 public class Render {
     private Paint paint;
     private Bitmap bitmap;
     private Text text;
 
-    private HashMap<Integer,double[]> typeColorsIdentity0;
     private CoefficientsIdentity0 identity0;
 
-    // test
-    private SpeedMeasurement speedMeasurement;
+    private TestVisualization test = new TestVisualization();
 
     public Render(Model model) {
         paint = new Paint();
@@ -31,8 +25,6 @@ public class Render {
         text = new Text();
 
         identity0 = new CoefficientsIdentity0();
-        // test
-        speedMeasurement = new SpeedMeasurement(1000);
     }
 
     private int border(int value){
@@ -69,12 +61,10 @@ public class Render {
         Bitmap bitmapMultiplication = Bitmap.createScaledBitmap(bitmap,side,side, false);
         canvas.drawBitmap(bitmapMultiplication,0,0,paint);
 
-        // test
-        //symmetryTest(canvas,model.getMatrices().getMatrixIdentity1());
-        speedMeasurement.process();
-        text.drawText(speedMeasurement.getDifferenceText(),50,120,100,Color.RED,canvas);
+        test.process(canvas,model,side);
     }
 
+    //// objects ////
     private int drawSnake(Snake snake, int i, int bright){
         int head = snake.getPointHead(i).getValue();
         int motors = snake.getPointMotors(i).getValue();
@@ -109,7 +99,7 @@ public class Render {
         return Color.argb(255,000,000,track);
     }
 
-    // test
+    // future
     private int drawSnakeTest(Snake snake, int i, int bright){
         int head = snake.getPointHead(i).getValue();
         int motors = snake.getPointMotors(i).getValue();
@@ -124,12 +114,4 @@ public class Render {
         }
     }
 
-    private void symmetryTest(Canvas canvas,Matrix matrix){
-        if(Turn.turnHorizontal(matrix)){
-            paint.setColor(Color.GREEN);
-        }else{
-            paint.setColor(Color.RED);
-        }
-        canvas.drawRect(0,0,100,100,paint);
-    }
 }
