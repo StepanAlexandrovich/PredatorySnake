@@ -18,6 +18,7 @@ public class CoefficientsIdentity0 {
         typeColorsIdentity0.put(8,new double[]{1.0,1.0,0.0});
         typeColorsIdentity0.put(9,new double[]{1.0,0.0,1.0});
         typeColorsIdentity0.put(10,new double[]{0.5,0.5,1.0});
+        typeColorsIdentity0.put(11,new double[]{0.0,0.0,0.0});
     }
 
     private double[] doubles(int type){ return typeColorsIdentity0.get(type); }

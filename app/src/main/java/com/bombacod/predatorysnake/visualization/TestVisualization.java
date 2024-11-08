@@ -23,10 +23,11 @@ public class TestVisualization {
         paint.setColor(Color.BLACK);
         canvas.drawRect(0,side,side,side + 300,paint);
 
-//        symmetryTest(canvas,model.getMatrices().getMatrixIdentity1());
+        symmetryTest(canvas,model.getMatrix1());
 //        timerTest(canvas,side);
 //        speedTestRendering(canvas,side);
         speedTestModel(canvas,model,side);
+        text.drawText(model.getBubbles().getNumber()+"", 600,side + 100,100,Color.RED,canvas);
     }
 
     private void symmetryTest(Canvas canvas, Matrix matrix){

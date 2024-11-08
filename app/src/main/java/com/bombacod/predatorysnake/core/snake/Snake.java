@@ -1,80 +1,77 @@
 package com.bombacod.predatorysnake.core.snake;
 
-import com.bombacod.predatorysnake.core.matrices.Matrices;
 import com.bombacod.predatorysnake.core.matrix.Point;
-import com.bombacod.predatorysnake.core.snake.tail.Tail;
+import com.bombacod.predatorysnake.core.layers.Layers;
+import com.bombacod.predatorysnake.core.snake.body.Body;
 import com.bombacod.predatorysnake.core.snake.head.Head;
-import com.bombacod.predatorysnake.core.snake.motors.Motors;
+import com.bombacod.predatorysnake.core.snake.motors.Motor;
 
 public class Snake {
-    private SnakeData snakeData;
+    private DataSnake data;
 
     private Head head;
-    private Motors motors;
-    private Tail tail;
+    private Motor motor0,motor1;
+    private Body body;
 
-    public Snake(Matrices matrices,int typeMotor1,int typeMotor2) {
-        snakeData = new SnakeData(matrices).setTypeMotor1(typeMotor1).setTypeMotor2(typeMotor2);
+    public Snake(int typeHead, int typeMotor1, int typeMotor2, Layers layers) {
+        data = new DataSnake(typeHead,typeMotor1,typeMotor2, layers);
 
-        head = new Head(snakeData);
-        motors = new Motors(snakeData);
-        tail = new Tail(snakeData);
+        head = new Head(data).setLowerBorder(400).setPower(3000);
+        motor0 = new Motor(0,data).setLowerBorder(20).setPower(500);
+        motor1 = new Motor(1,data).setLowerBorder(20).setPower(500);
+        body = new Body(data);
     }
 
     public void start(int x,int y,String direction){
-        if(direction == "left"){
-            head.left();
-        }else
-        if(direction == "right"){
-            head.right();
-        }else
-        if(direction == "directly"){
-            head.directly();
+        switch (direction){
+            case "directly": head.directly(); break;
+            case "right": head.right(); break;
+            case "left": head.left(); break;
         }
 
-        head.start(x,y,40000,1);
-
-        motors.start(x - 3,y + 8,10000,snakeData.getTypeMotor1());
-        motors.start(x + 3,y + 8,7000,snakeData.getTypeMotor2());
+        head.start(x,y,40000);
+        motor0.start(x - 3,y + 8,10000);
+        motor1.start(x + 3,y + 8,10000);
     }
 
     // encapsulation
     public void right(){ head.right(); }
     public void left(){ head.left(); }
 
-    public boolean isHead(int index) { return snakeData.isHead(index); }
-    public boolean isMotors(int index) { return snakeData.isMotors(index); }
-    public boolean isSnake(int index) { return snakeData.isSnake(index); }
+    public boolean isHead(int index) { return data.isHead(index); }
+    public boolean isMotors(int index) { return data.isMotors(index); }
+    public boolean isSnake(int index) { return data.isSnake(index); }
+
+    public boolean isLife(){ return data.isLife(); }
 
     public Point getPointHead(int index){
-        return snakeData.getPointHead(index);
+        return data.getPointHead(index);
     }
     public Point getPointMotors(int index){
-        return snakeData.getPointMotors(index);
+        return data.getPointMotors(index);
     }
 
-    public int getTypeHead(){ return snakeData.getTypeHead(); }
+    public int getTypeHead(){ return data.getTypeHead(); }
 
     private int newTypeHead(){
-        int length = snakeData.getLength();
+        int length = data.getLength();
 
         int numberOfTypes = 20;  // refactoring
         int[] a = new int[numberOfTypes];
         int[] b = new int[numberOfTypes];
         for (int i = 0; i < length; i++) {
-            Point pointHead = snakeData.getPointHead(i);
+            Point pointHead = data.getPointHead(i);
 
-
-            if(snakeData.isMotor1(i) && pointHead.getValue() > 0){
+            if(data.isMotor1(i) && pointHead.getValue() > 0){
                 a[pointHead.getType()]++;
             }else
-            if(snakeData.isMotor2(i) && pointHead.getValue() > 0){
+            if(data.isMotor2(i) && pointHead.getValue() > 0){
                 b[pointHead.getType()]++;
             }
         }
 
         for (int i = 0; i < numberOfTypes; i++) {
-            if(a[i] > 0 && b[i] > 0 && i == snakeData.getTypeHead()){
+            if(a[i] > 0 && b[i] > 0 && i == data.getTypeHead()){
                 return i;
             }
         }
@@ -85,15 +82,16 @@ public class Snake {
             }
         }
 
-        return snakeData.getTypeHead();
+        return data.getTypeHead();
     }
 
     ////////////////////////
     public void process(){
-        snakeData.setTypeHead(newTypeHead());
+        data.setTypeHead(newTypeHead());
 
         head.process();
-        motors.process();
-        tail.process();
+        motor0.process();
+        motor1.process();
+        body.process();
     }
 }

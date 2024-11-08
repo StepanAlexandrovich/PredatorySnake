@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import com.bombacod.predatorysnake.core.Model;
 import com.bombacod.predatorysnake.core.matrix.Matrix;
 import com.bombacod.predatorysnake.core.matrix.Point;
+import com.bombacod.predatorysnake.core.obstacle.Fence;
 import com.bombacod.predatorysnake.core.snake.Snake;
 
 public class Render {
@@ -16,6 +17,7 @@ public class Render {
     private Text text;
 
     private CoefficientsIdentity0 identity0;
+
 
     private TestVisualization test = new TestVisualization();
 
@@ -39,6 +41,7 @@ public class Render {
 
         Snake snake = model.getSnake();
         Snake snakeTest = model.getSnakeTest();
+        Fence fence = model.getFence();
 
         int length = model.getLength();
 
@@ -52,17 +55,22 @@ public class Render {
             if(snakeTest.isSnake(i)){
                 bitmap.setPixel(x,y, drawSnakeTest(snakeTest,i,10));
             }else
-            if(model.getMatrices().getMatrixIdentity0().getPoint(i).getValue() >0){
-                bitmap.setPixel(x,y, drawBubbles(model.getMatrices().getMatrixIdentity0(),i,10));
+            if(fence.isFence(i)){
+                bitmap.setPixel(x,y, drawFence(model.getMatrix3(), i,10));
+            }else
+            if(model.getMatrix0().getPoint(i).getValue() >0){
+                bitmap.setPixel(x,y, drawBubbles(model.getMatrix0(),i,10));
             }else
             if(true){
-                bitmap.setPixel(x,y,drawTrack(model.getMatrices().getMatrixTrack(),i,0.5));
+                bitmap.setPixel(x,y,drawTrack(model.getMatrix2(),i,0.5));
             }
         }
 
         int side = canvas.getWidth();
         Bitmap bitmapMultiplication = Bitmap.createScaledBitmap(bitmap,side,side, false);
         canvas.drawBitmap(bitmapMultiplication,0,0,paint);
+
+        text.drawText(model.gameStateText(), 50,side,50,Color.RED,canvas);
 
         test.process(canvas,model,side);
     }
@@ -85,12 +93,12 @@ public class Render {
     private int drawBubbles(Matrix matrix, int i, int bright){
         Point point = matrix.getPoint(i);
 
-        int type = point.getType();
+        int dataType = point.getType();
         int value = border(point.getValue() * bright);
 
-        double red = identity0.red(type);
-        double green = identity0.green(type);
-        double blue = identity0.blue(type);
+        double red = identity0.red(dataType);
+        double green = identity0.green(dataType);
+        double blue = identity0.blue(dataType);
 
         return Color.argb(255,(int)(value*red),(int)(value*green),(int)(value*blue));
     }
@@ -100,6 +108,12 @@ public class Render {
         track = border((int)(track * bright));
         if(track > 0){ track = track * 2; }
         return Color.argb(255,000,000,track);
+    }
+
+    private int drawFence(Matrix matrix,int i,double bright){
+        int value = matrix.getPoint(i).getValue();
+        value = border((int)(value * bright));
+        return Color.argb(255,000,255,255);
     }
 
     // future

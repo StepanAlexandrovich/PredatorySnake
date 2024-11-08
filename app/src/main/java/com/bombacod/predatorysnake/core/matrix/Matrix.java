@@ -1,26 +1,24 @@
 package com.bombacod.predatorysnake.core.matrix;
 
-public abstract class Matrix {
+public class Matrix {
     private Point[] points;
     private int width,height,length;
 
-    public Matrix(int width,int height){
+    public Matrix(int width,int height,CreatePoint createPoint){
         this.length = (this.width = width)*(this.height = height);
 
         points = new Point[length];
-        for(int i = 0;i<length;i++){
-            points[i] = createPoint();
-        }
 
         int index = 0;
         for(int y = 0;y<height;y++){
             for(int x = 0;x<width;x++){
-                // задаём точке координаты
-                getPoint(x,y).index = index++;
-                getPoint(x,y).x = x;
-                getPoint(x,y).y = y;
+                points[index] = createPoint.create(index,x,y);
+                index++;
+            }
+        }
 
-                // устанавливаем связи c соседними точками
+        for(int y = 0;y<height;y++){
+            for(int x = 0;x<width;x++){
                 getPoint(x,y).points[0] = getPoint(x,y);
                 getPoint(x,y).points[1] = getPoint(x+1,y);
                 getPoint(x,y).points[2] = getPoint(x,y+1);
@@ -30,8 +28,6 @@ public abstract class Matrix {
         }
 
     }
-
-    public abstract Point createPoint();
 
     ///////////// getPoint() /////////////////
     public int ring(int vel,int min,int max){
@@ -82,6 +78,12 @@ public abstract class Matrix {
             point.setValue(value);
         }
         return this;
+    }
+
+    public void process(){
+        for (Point point : points) {
+            point.process();
+        }
     }
 
     public void processNext(){

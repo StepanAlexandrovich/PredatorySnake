@@ -1,19 +1,19 @@
 package com.bombacod.predatorysnake.core.snake.motors;
 
 import com.bombacod.predatorysnake.core.UniversalMethods;
-import com.bombacod.predatorysnake.core.snake.SnakeData;
+import com.bombacod.predatorysnake.core.snake.DataSnake;
 
 class Decrease {
-    private SnakeData snakeData;
+    private DataSnake data;
 
-    public Decrease(SnakeData snakeData) {
-        this.snakeData = snakeData;
+    public Decrease(DataSnake data) {
+        this.data = data;
     }
 
     public void process(){
-        for (int i = 0; i < snakeData.getLength(); i++) {
-            if(snakeData.isMotors(i)){
-                UniversalMethods.decrease(snakeData.getPointMotors(i),-1);
+        for (int i = 0; i < data.getLength(); i++) {
+            if(data.isMotors(i)){
+                UniversalMethods.decrease(data.getPointMotors(i),-1);
             }
         }
     }

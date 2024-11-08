@@ -1,68 +1,63 @@
 package com.bombacod.predatorysnake.core.snake.head;
 
+import com.bombacod.predatorysnake.core.MatrixObject;
+import com.bombacod.predatorysnake.core.UniversalMethods;
 import com.bombacod.predatorysnake.core.matrix.Point;
-import com.bombacod.predatorysnake.core.snake.SnakeData;
+import com.bombacod.predatorysnake.core.snake.DataSnake;
 
-public class Head {
-    private SnakeData snakeData;
-    private int length;
+public class Head implements MatrixObject {
+    private DataSnake data;
 
-    private Generator generator;
-    private double[] coefficientsImpactMotors;
+    private GeneratorHead generator;
+    private Control control;
 
-    private Decrease decrease;
+    public Head(DataSnake data) {
+        this.data = data;
 
-    public Head(SnakeData snakeData) {
-        this.snakeData = snakeData;
-        this.length = snakeData.getLength();
-
-        generator = new Generator(snakeData).setPower(3000);
-
-        coefficientsImpactMotors = new double[800];
-
-        decrease = new Decrease(snakeData);
+        generator = new GeneratorHead(data);
+        control = new Control(data);
     }
 
-    public void start(int x,int y, int value,int type){
-        Point point = snakeData.getMatrixHead().getPoint(x, y);
-
-        point.setValue(value);
-        point.setType(type);
+    // encapsulation generator
+    public Head setPower(int power) {
+        generator.setPower(power);
+        return this;
     }
 
-    public void process(){
-        generator.process();
-
-        // impact matrixMotors to matrix
-        for(int i = 0; i < length; i++){
-            Point point = snakeData.getPointHead(i);
-            Point pointMotors = snakeData.getPointMotors(i);
-
-            if(snakeData.isHead(i) && snakeData.isMotors(i)){
-                int impact = (int)(pointMotors.getValue() * coefficientsImpactMotors[pointMotors.getType()]);
-                point.addValue(-impact);
-                if(point.getValue()<0){
-                    point.reset();
-                }
-            }
-        }
-
-        decrease.process();
+    public Head setLowerBorder(int hCore) {
+        generator.setLowerBorder(hCore);
+        return this;
     }
 
+    // encapsulation control
     public void directly(){
-        coefficientsImpactMotors[snakeData.getTypeMotor1()] = 1.0;
-        coefficientsImpactMotors[snakeData.getTypeMotor2()] = 1.0;
+        control.directly();
     }
 
     public void right(){
-        coefficientsImpactMotors[snakeData.getTypeMotor1()] = 1.5;
-        coefficientsImpactMotors[snakeData.getTypeMotor2()] = 0.3;
+        control.right();
     }
 
     public void left(){
-        coefficientsImpactMotors[snakeData.getTypeMotor1()] = 0.3;
-        coefficientsImpactMotors[snakeData.getTypeMotor2()] = 1.5;
+        control.left();
+    }
+
+    //////////////////////////
+    @Override
+    public void start(int x, int y, int value){
+        Point point = data.getMatrixHead().getPoint(x, y);
+        point.setValue(value).setType(data.getTypeHead());
+    }
+
+    @Override
+    public void process(){
+        if(data.isLifeMotor0() && data.isLifeMotor1()){
+            generator.process(data.getPointsHead());
+        }
+
+        control.process(data.getPointsHead());
+
+        UniversalMethods.decrease(data.getPointsHead(),-1);
     }
 
 }

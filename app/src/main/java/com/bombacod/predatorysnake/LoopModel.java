@@ -13,9 +13,9 @@ public class LoopModel extends ThreadLoop{
 
     @Override
     public void process() {
-        if(timer.process()){ // fps
+        //if(timer.process()){ // fps
             model.process();
-        }
+        //}
     }
 
 }

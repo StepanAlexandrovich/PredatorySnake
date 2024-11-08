@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
+        public void surfaceCreated(SurfaceHolder surfaceHolder) {
             model = new Model(101,101);
             loopModel = new LoopModel(model,50);
             loopCanvas = new LoopCanvas(surfaceHolder,model);
@@ -52,11 +52,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void surfaceChanged(@NonNull SurfaceHolder surfaceHolder, int format, int width, int height) {
+        public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {
         }
 
         @Override
-        public void surfaceDestroyed(@NonNull SurfaceHolder surfaceHolder) {
+        public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
             boolean retry = true;
             loopModel.setRunning(false);
             loopCanvas.setRunning(false);

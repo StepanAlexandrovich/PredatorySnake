@@ -1,8 +1,12 @@
-package com.bombacod.predatorysnake.core.matrices;
+package com.bombacod.predatorysnake.core.layers;
 
 import com.bombacod.predatorysnake.core.matrix.Point;
 
-public class PointIdentityImpl extends Point {
+public class PointIdentityImpl extends Point{
+
+    public PointIdentityImpl(int index, int x, int y) {
+        super(index, x, y);
+    }
 
     @Override
     public void process(){
@@ -16,7 +20,7 @@ public class PointIdentityImpl extends Point {
                 if(point.type[now] == point1.type[now]){
                     sum += point1.value[now];
                 }else{
-                    sum += -point1.value[now];
+                    sum -= point1.value[now];
                 }
             }
 
@@ -29,5 +33,4 @@ public class PointIdentityImpl extends Point {
 
         if(value[next]==0){ type[next] = 0; }
     }
-
 }

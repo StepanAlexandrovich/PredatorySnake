@@ -16,4 +16,5 @@ public class Text {
 
         canvas.drawText(text,x,y,fontPaint);
     }
+
 }

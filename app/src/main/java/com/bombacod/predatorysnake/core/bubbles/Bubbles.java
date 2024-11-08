@@ -1,21 +1,34 @@
 package com.bombacod.predatorysnake.core.bubbles;
 
-import com.bombacod.predatorysnake.core.UniversalMethods;
-import com.bombacod.predatorysnake.core.matrix.Matrix;
-import com.bombacod.predatorysnake.core.matrix.Point;
+import com.bombacod.predatorysnake.core.layers.Layers;
 
 public class Bubbles {
-    private Matrix matrix;
-    private Generator generator; // private
+    private Layers layers;
+    private Bubble[] bubbles;
 
-    public Bubbles(Matrix matrix) {
-        this.matrix = matrix;
+    private int number;
 
-        generator = new Generator(matrix.getPoints());
+    public Bubbles(Layers layers) {
+        this.layers = layers;
+        bubbles = new Bubble[20];
     }
 
-    public Matrix getMatrix() {
-        return matrix;
+    public int getNumber() {
+        return number;
+    }
+
+    public Bubble addBubble(int type){
+        Bubble bubble = new Bubble(type, layers).setPower(2000).setLowerBorder(400);
+        return bubbles[type] = bubble;
+    }
+
+    public void deleteBubble(int type){
+        bubbles[type] = null;
+    }
+
+    public void start(int x, int y, int value, int type){
+        Bubble bubble = addBubble(type);
+        bubble.start(x,y,value);
     }
 
     public void startMatrix(int xBase,int yBase,int startType,int side,int multiplication){
@@ -28,22 +41,23 @@ public class Bubbles {
         }
     }
 
-    public void start(int x, int y, int value, int type){
-        Point point = matrix.getPoint(x,y);
-        point.setType(type);
-        point.setValue(value);
-        generator.addType(point.getType());
-    }
-
-    // encapsulation
-    public void deleteBubble(int type){
-        generator.deleteType(type);
-    }
-
     ////////////////////////
     public void process(){
-        generator.process();
-        UniversalMethods.decrease(matrix,-1);
+        int number = 0;
+        for (int i = 0; i < bubbles.length; i++) {
+            Bubble bubble = bubbles[i];
+
+            if(bubble != null && !bubble.isLife()){
+                bubbles[i] = bubble = null;
+            }
+
+            if(bubble != null){
+                bubble.process();
+                number++;
+            }
+        }
+
+        this.number = number;
     }
 
 }
