@@ -11,21 +11,19 @@ import com.bombacod.predatorysnake.core.matrix.Point;
 import com.bombacod.predatorysnake.core.obstacle.Fence;
 import com.bombacod.predatorysnake.core.snake.Snake;
 
-public class Render {
+public class Render {   // Color.arb -> long -> remake
     private Paint paint;
     private Bitmap bitmap;
     private Text text;
 
-    private CoefficientsIdentity0 identity0;
-
-
+    private DifferentColors differentColors;
     private TestVisualization test = new TestVisualization();
 
     public Render() { // избавиться
         paint = new Paint();
         text = new Text();
 
-        identity0 = new CoefficientsIdentity0();
+        differentColors = new DifferentColors();
     }
 
     private int border(int value){
@@ -49,17 +47,17 @@ public class Render {
             int x = model.getX(i);
             int y = model.getY(i);
 
-            if(snake.isSnake(i)){
+            if(snake.isExisting(i)){
                 bitmap.setPixel(x,y, drawSnake(snake,i,10));
             }else
-            if(snakeTest.isSnake(i)){
-                bitmap.setPixel(x,y, drawSnakeTest(snakeTest,i,10));
-            }else
-            if(fence.isFence(i)){
+//            if(snakeTest.isExisting(i)){
+//                bitmap.setPixel(x,y, drawSnakeTest(snakeTest,i,10));
+//            }else
+            if(fence.isExisting(i)){
                 bitmap.setPixel(x,y, drawFence(model.getMatrix3(), i,10));
             }else
-            if(model.getMatrix0().getPoint(i).getValue() >0){
-                bitmap.setPixel(x,y, drawBubbles(model.getMatrix0(),i,10));
+            if(model.getMatrix0().getPoint(i).getValue() > 0){ // remake
+                bitmap.setPixel(x,y, differentColors.draw(model.getMatrix0().getPoint(i),10));
             }else
             if(true){
                 bitmap.setPixel(x,y,drawTrack(model.getMatrix2(),i,0.5));
@@ -72,7 +70,7 @@ public class Render {
 
         text.drawText(model.gameStateText(), 50,side,50,Color.RED,canvas);
 
-        test.process(canvas,model,side);
+        //test.process(canvas,model,side);
     }
 
     //// objects ////
@@ -85,22 +83,12 @@ public class Render {
 
         if(head>0 && motors == 255){
             return Color.argb(255,motors,head/2,000);
-        }else{
+        }else
+        if(head>0 && motors == 0){
+            return differentColors.draw(snake.getPointHead(i),bright);
+        } else{
             return Color.argb(255,motors,000,000);
         }
-    }
-
-    private int drawBubbles(Matrix matrix, int i, int bright){
-        Point point = matrix.getPoint(i);
-
-        int dataType = point.getType();
-        int value = border(point.getValue() * bright);
-
-        double red = identity0.red(dataType);
-        double green = identity0.green(dataType);
-        double blue = identity0.blue(dataType);
-
-        return Color.argb(255,(int)(value*red),(int)(value*green),(int)(value*blue));
     }
 
     private int drawTrack(Matrix matrixTrack,int i,double bright){

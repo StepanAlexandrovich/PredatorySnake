@@ -1,7 +1,6 @@
 package com.bombacod.predatorysnake;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.SurfaceHolder;
@@ -28,11 +27,19 @@ public class MainActivity extends AppCompatActivity {
 
             setOnTouchListener((view, motionEvent) -> {
 
+                int margin = (int)(getWidth()*0.4);
+
+                int x0 = 0;
+                int x1 = 0 + margin;
+                int x2 = getWidth() - margin;
+                int x3 = getWidth();
+
                 float x = motionEvent.getX();
                 //float y = motionEvent.getY();
 
-                if(x < this.getWidth()/2){ model.left();  }
-                else                     { model.right(); }
+                if(x > x0 && x < x1){ model.left();    }else
+                if(x > x1 && x < x2){ model.restart(); }else
+                if(x > x2 && x < x3){ model.right();   }
 
                 return  false;
             });

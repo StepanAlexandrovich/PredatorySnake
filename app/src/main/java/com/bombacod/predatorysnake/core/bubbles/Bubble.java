@@ -1,16 +1,14 @@
 package com.bombacod.predatorysnake.core.bubbles;
 
-import com.bombacod.predatorysnake.core.MatrixObject;
+import com.bombacod.predatorysnake.core.MatrixObjectStandard;
 import com.bombacod.predatorysnake.core.UniversalMethods;
-import com.bombacod.predatorysnake.core.matrix.Point;
-import com.bombacod.predatorysnake.core.layers.Layers;
+import com.bombacod.predatorysnake.core.layers.Layer;
 
-public class Bubble implements MatrixObject {
-    private DataBubble data;
+public class Bubble extends MatrixObjectStandard {
     private GeneratorBubble generator;
 
-    public Bubble(int type, Layers layers) {
-        data = new DataBubble(layers,type);
+    public Bubble(int type, Layer layer) {
+        super(type,layer);
 
         this.generator = new GeneratorBubble();
     }
@@ -26,21 +24,10 @@ public class Bubble implements MatrixObject {
         return this;
     }
 
-    //
-    public boolean isLife(){
-        return data.getPoints().size() != 0;
-    }
-
-    @Override
-    public void start(int x, int y, int value) {
-        Point point = data.getMatrix().getPoint(x,y);
-        point.setValue(value).setType(data.getType());
-    }
-
     //////////////////////
-    @Override
     public void process(){
-        generator.process(data.getPoints());
-        UniversalMethods.decrease(data.getPoints(),-1);
+        generator.process(getPoints());
+        UniversalMethods.decrease(getPoints(),-1);
     }
+
 }

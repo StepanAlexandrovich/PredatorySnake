@@ -1,24 +1,20 @@
 package com.bombacod.predatorysnake.core.snake.motors;
 
-import com.bombacod.predatorysnake.core.MatrixObject;
+import com.bombacod.predatorysnake.core.MatrixObjectStandard;
 import com.bombacod.predatorysnake.core.UniversalMethods;
-import com.bombacod.predatorysnake.core.matrix.Point;
-import com.bombacod.predatorysnake.core.snake.DataSnake;
+import com.bombacod.predatorysnake.core.interfaces.IsExisting;
+import com.bombacod.predatorysnake.core.layers.Layer;
 
-public class Motor implements MatrixObject {
-    private int index;
-
-    private DataSnake data;
+public class Motor extends MatrixObjectStandard {
     private GeneratorMotor generator;
 
-    public Motor(int index,DataSnake data) {
-        this.index = index;
-        this.data = data;
+    public Motor(int type, Layer layer) {
+        super(type,layer);
 
-        generator = new GeneratorMotor(data);
+        generator = new GeneratorMotor();
     }
 
-    // encapsulation
+    // encapsulation generator
     public Motor setPower(int power) {
         generator.setPower(power);
         return this;
@@ -29,15 +25,9 @@ public class Motor implements MatrixObject {
         return this;
     }
 
-    @Override
-    public void start(int x, int y, int value) {
-        Point point = data.getMatrixMotors().getPoint(x,y);
-        point.setValue(value).setType(data.getTypeMotors(index));
+    public void process(IsExisting object) {
+        generator.process(getPoints(),object);
+        UniversalMethods.decrease(getPoints(),-1);
     }
 
-    @Override
-    public void process() {
-        generator.process(data.getPointsMotor(index));
-        UniversalMethods.decrease(data.getPointsMotor(index),-1);
-    }
 }

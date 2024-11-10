@@ -17,7 +17,7 @@ public class GameState {
     private int step;
     private String gameState,commit;
 
-    public GameState(int finalTime, Snake snake, Bubbles bubbles) {
+    public GameState(int finalTime) {
         this.finalTime = finalTime;
         this.snake = snake;
         this.bubbles = bubbles;
@@ -29,9 +29,13 @@ public class GameState {
     public int getStep() { return step; }
     public String text(){ return gameState + commit; }
 
-    //////////////////////////
-    public void process(){
+    public void reset(){
+        gameState = PROCESS;
+        step = 0;
+    }
 
+    //////////////////////////
+    public void process(Bubbles bubbles,Snake snake){
         if(Objects.equals(gameState, PROCESS)){
             step++;
 
@@ -53,7 +57,6 @@ public class GameState {
             }
 
         }
-
     }
 
 }

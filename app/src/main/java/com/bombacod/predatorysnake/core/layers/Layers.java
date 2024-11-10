@@ -21,17 +21,24 @@ public class Layers {
     public int getX(int index){ return layer0.getMatrix().getPoint(index).x; }
     public int getY(int index){ return layer0.getMatrix().getPoint(index).y; }
 
-    public Layer getPlane0() { return layer0; }
-    public Layer getPlane1() { return layer1; }
-    public Layer getPlane2() { return layer2; }
-    public Layer getPlane3() { return layer3; }
+    public Layer getLayer0() { return layer0; }
+    public Layer getLayer1() { return layer1; }
+    public Layer getLayer2() { return layer2; }
+    public Layer getLayer3() { return layer3; }
+
+    public void reset(){
+        layer0.getMatrix().fillMatrix(0);
+        layer1.getMatrix().fillMatrix(0);
+        layer2.getMatrix().fillMatrix(200);
+//        layer3.getMatrix().fillMatrix(200);
+    }
 
     ////////////
     private void updateMatrices(){
         layer0.getMatrix().processNext();
         layer1.getMatrix().processNext();
         layer2.getMatrix().processNext();
-        //layer3.getMatrix().process();
+//        layer3.getMatrix().process();
     }
 
     private void updateTypes(){

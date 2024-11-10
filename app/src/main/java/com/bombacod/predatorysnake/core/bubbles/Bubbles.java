@@ -1,16 +1,18 @@
 package com.bombacod.predatorysnake.core.bubbles;
 
+import com.bombacod.predatorysnake.core.layers.Layer;
 import com.bombacod.predatorysnake.core.layers.Layers;
 
 public class Bubbles {
-    private Layers layers;
+    private Layer layer;
     private Bubble[] bubbles;
 
     private int number;
 
     public Bubbles(Layers layers) {
-        this.layers = layers;
-        bubbles = new Bubble[20];
+        layer = layers.getLayer0();
+
+        bubbles = new Bubble[20]; // remake
     }
 
     public int getNumber() {
@@ -18,7 +20,7 @@ public class Bubbles {
     }
 
     public Bubble addBubble(int type){
-        Bubble bubble = new Bubble(type, layers).setPower(2000).setLowerBorder(400);
+        Bubble bubble = new Bubble(type, layer).setPower(2000).setLowerBorder(400);
         return bubbles[type] = bubble;
     }
 

@@ -1,26 +1,25 @@
 package com.bombacod.predatorysnake.core.snake.body;
 
-import com.bombacod.predatorysnake.core.MatrixObject;
+import com.bombacod.predatorysnake.core.interfaces.IsExisting;
+import com.bombacod.predatorysnake.core.layers.Layer;
+import com.bombacod.predatorysnake.core.matrix.Matrix;
 import com.bombacod.predatorysnake.core.matrix.Point;
-import com.bombacod.predatorysnake.core.snake.DataSnake;
 
-public class Body implements MatrixObject {
-    private DataSnake data;
+public class Body {
+    private Matrix matrix;
 
-    public Body(DataSnake data) {
-        this.data = data;
+    public Body(Layer layer) {
+        matrix = layer.getMatrix();
     }
 
-    @Override
-    public void start(int x, int y, int value) {}
-
-    public void process(){
-        for (Point point : data.getPointsBody()) {
+    public void process(IsExisting head, IsExisting motor0, IsExisting motor1){
+        for (Point point : matrix.getPoints()) {
             int index = point.index;
 
-            if(data.isHead(index) || data.isMotors(index)){
+            if(head.isExisting(index) || motor0.isExisting(index) || motor1.isExisting(index)){
                 point.reset();
             }
         }
     }
+
 }

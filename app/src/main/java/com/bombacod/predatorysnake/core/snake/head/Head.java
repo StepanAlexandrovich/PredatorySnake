@@ -1,21 +1,18 @@
 package com.bombacod.predatorysnake.core.snake.head;
 
-import com.bombacod.predatorysnake.core.MatrixObject;
+import com.bombacod.predatorysnake.core.MatrixObjectStandard;
 import com.bombacod.predatorysnake.core.UniversalMethods;
-import com.bombacod.predatorysnake.core.matrix.Point;
-import com.bombacod.predatorysnake.core.snake.DataSnake;
+import com.bombacod.predatorysnake.core.layers.Layer;
 
-public class Head implements MatrixObject {
-    private DataSnake data;
-
+public class Head extends MatrixObjectStandard {
     private GeneratorHead generator;
     private Control control;
 
-    public Head(DataSnake data) {
-        this.data = data;
+    public Head(int type, Layer layer) {
+        super(type,layer);
 
-        generator = new GeneratorHead(data);
-        control = new Control(data);
+        generator = new GeneratorHead();
+        control = new Control();
     }
 
     // encapsulation generator
@@ -33,31 +30,21 @@ public class Head implements MatrixObject {
     public void directly(){
         control.directly();
     }
-
     public void right(){
         control.right();
     }
-
     public void left(){
         control.left();
     }
 
     //////////////////////////
-    @Override
-    public void start(int x, int y, int value){
-        Point point = data.getMatrixHead().getPoint(x, y);
-        point.setValue(value).setType(data.getTypeHead());
-    }
-
-    @Override
-    public void process(){
-        if(data.isLifeMotor0() && data.isLifeMotor1()){
-            generator.process(data.getPointsHead());
+    public void process(MatrixObjectStandard object0, MatrixObjectStandard object1){
+        if(object0.isLife() && object1.isLife()){
+            generator.process(getPoints(),object0,object1);
         }
 
-        control.process(data.getPointsHead());
-
-        UniversalMethods.decrease(data.getPointsHead(),-1);
+        control.process(getPoints(),object0,object1);
+        UniversalMethods.decrease(getPoints(),-1);
     }
 
 }

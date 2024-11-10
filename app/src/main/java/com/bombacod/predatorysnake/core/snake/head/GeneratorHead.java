@@ -1,19 +1,13 @@
 package com.bombacod.predatorysnake.core.snake.head;
 
+import com.bombacod.predatorysnake.core.interfaces.IsExisting;
 import com.bombacod.predatorysnake.core.matrix.Point;
-import com.bombacod.predatorysnake.core.snake.DataSnake;
 
 import java.util.List;
 
 public class GeneratorHead {
     private int power;
     private int lowerBorder;
-
-    private DataSnake data;
-
-    public GeneratorHead(DataSnake data) {
-        this.data = data;
-    }
 
     public void setPower(int power) {
         this.power = power;
@@ -22,16 +16,17 @@ public class GeneratorHead {
         this.lowerBorder = lowerBorder;
     }
 
-    private boolean isCore(Point point){
-        return point.getValue() > lowerBorder && !data.isMotors(point.index);
+    private boolean isCore(Point point, IsExisting object0, IsExisting object1){
+        int index = point.index;
+        return point.getValue() > lowerBorder && !object0.isExisting(index) && !object1.isExisting(index);
     }
 
-    public void process(List<Point> points){
+    public void process(List<Point> points, IsExisting object0, IsExisting object1){
         int mass = 0;
         int generation = 0;
 
         for (Point point : points) {
-            if(isCore(point)){
+            if(isCore(point,object0,object1)){
                 mass += 1;
             }
         }
@@ -41,7 +36,7 @@ public class GeneratorHead {
         }
 
         for (Point point : points) {
-            if(isCore(point)){
+            if(isCore(point,object0,object1)){
                 point.setValue(point.getValue() + generation);
             }
         }

@@ -1,5 +1,6 @@
 package com.bombacod.predatorysnake.core.obstacle;
 
+import com.bombacod.predatorysnake.core.interfaces.IsExisting;
 import com.bombacod.predatorysnake.core.layers.Layers;
 import com.bombacod.predatorysnake.core.matrix.Matrix;
 import com.bombacod.predatorysnake.core.matrix.Point;
@@ -7,15 +8,15 @@ import com.bombacod.predatorysnake.core.matrix.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Fence {  // implements
+public class Fence implements IsExisting {
     private int type;
     private List<Point> points;
-    private Matrix matrixMark;
+    private Matrix matrixMark,matrixHead,matrixMotors;
 
     public Fence(int type, Layers layers) {
         this.type = type;
 
-        matrixMark = layers.getPlane3().getMatrix();
+        matrixMark = layers.getLayer3().getMatrix();
         for (Point point : matrixMark.getPoints()) {
             point.setType(type);
         }
@@ -27,22 +28,27 @@ public class Fence {  // implements
         }
 
         points = new ArrayList<>();
-        Matrix matrix = layers.getPlane0().getMatrix();
-        for (Point pointMark : matrixMark.getPoints()) {
-            if(pointMark.getType() == type){
-                points.add(matrix.getPoint(pointMark.index));
+
+        for (Point point : matrixMark.getPoints()) {
+            if(point.getType() == type){
+                points.add(point);
             }
         }
 
+        matrixHead = layers.getLayer0().getMatrix();
+        matrixMotors = layers.getLayer1().getMatrix();
     }
 
-    public boolean isFence(int index){
+    @Override
+    public boolean isExisting(int index) {
         return matrixMark.getPoint(index).getType() == type;
-    }  // remake name
+    }
 
     public void process(){
         for (Point point : points) {
-            point.reset();
+            matrixHead.getPoint(point.index).reset();
+            matrixMotors.getPoint(point.index).reset();
         }
     }
+
 }

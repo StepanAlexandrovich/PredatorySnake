@@ -16,14 +16,14 @@ public class Square {
         this.type = type;
 
         points = new ArrayList<>();
-        Matrix matrix = layers.getPlane0().getMatrix();
+        Matrix matrix = layers.getLayer0().getMatrix();
         for (int y = y0; y <= y1; y++) {
             for (int x = x0; x <= x1; x++) {
                 points.add(matrix.getPoint(x,y));
             }
         }
 
-        matrixMark = layers.getPlane3().getMatrix();
+        matrixMark = layers.getLayer3().getMatrix();
     }
 
     public boolean isObstacle(int index){
