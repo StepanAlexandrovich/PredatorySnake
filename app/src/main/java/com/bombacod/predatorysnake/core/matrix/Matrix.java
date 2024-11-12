@@ -4,7 +4,7 @@ public class Matrix {
     private Point[] points;
     private int width,height,length;
 
-    public Matrix(int width,int height,CreatePoint createPoint){
+    public Matrix(int width,int height,Next next,CreatePoint createPoint){
         this.length = (this.width = width)*(this.height = height);
 
         points = new Point[length];
@@ -12,7 +12,7 @@ public class Matrix {
         int index = 0;
         for(int y = 0;y<height;y++){
             for(int x = 0;x<width;x++){
-                points[index] = createPoint.create(index,x,y);
+                points[index] = createPoint.create(index,x,y,next);
                 index++;
             }
         }
@@ -44,6 +44,9 @@ public class Matrix {
         return points[width*ring(y,0,height - 1) + ring(x,0,width - 1)];
     }
 
+    public boolean isPoint(int index){ return index >=0 && index < length; }
+    public boolean isPoint(int x,int y){ return isPoint(y * width + x); }
+
     public Point getPointCenter(int a,int b){
         return getPoint(width/2+a,height/2+b);
     }
@@ -73,9 +76,22 @@ public class Matrix {
         return this;
     }
 
-    public Matrix fillMatrix(int value){
+    public Matrix fillMatrix(int value,int type){
         for (Point point : points) {
-            point.setValue(value);
+            point.setValue(value).setType(type);
+        }
+        return this;
+    }
+
+    public Matrix fillMatrixExtra(int value,int type){
+        for (Point point : points) {
+            point.value[0] = value;
+            point.value[1] = value;
+
+            point.type[0] = type;
+            point.type[1] = type;
+
+            point.b = false;
         }
         return this;
     }
@@ -86,9 +102,4 @@ public class Matrix {
         }
     }
 
-    public void processNext(){
-        for (Point point : points) {
-            point.processNext();
-        }
-    }
 }

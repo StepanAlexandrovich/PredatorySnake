@@ -12,11 +12,11 @@ public class Body {
         matrix = layer.getMatrix();
     }
 
-    public void process(IsExisting head, IsExisting motor0, IsExisting motor1){
+    public void process(IsExisting motor0, IsExisting motor1){
         for (Point point : matrix.getPoints()) {
             int index = point.index;
 
-            if(head.isExisting(index) || motor0.isExisting(index) || motor1.isExisting(index)){
+            if(motor0.isExisting(index) || motor1.isExisting(index)){
                 point.reset();
             }
         }

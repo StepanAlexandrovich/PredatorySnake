@@ -18,12 +18,15 @@ public class Fence implements IsExisting {
 
         matrixMark = layers.getLayer3().getMatrix();
         for (Point point : matrixMark.getPoints()) {
-            point.setType(type);
+            //point.setType(type);
+            point.type[0] = type; // remake
+            point.type[1] = type;
         }
 
         for (int y = 1; y < matrixMark.getHeight() - 1; y++) {
             for (int x = 1; x < matrixMark.getWidth() - 1; x++) {
-                matrixMark.getPoint(x,y).reset();
+                //matrixMark.getPoint(x,y).reset();
+                matrixMark.getPoint(x,y).resetExtra(); // remake
             }
         }
 

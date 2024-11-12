@@ -1,11 +1,13 @@
 package com.bombacod.predatorysnake.core.layers;
 
+import com.bombacod.predatorysnake.core.matrix.Next;
 import com.bombacod.predatorysnake.core.matrix.Point;
 
 public class PointTrackImpl extends Point {
+    private int now,next;
 
-    public PointTrackImpl(int index, int x, int y) {
-        super(index, x, y);
+    public PointTrackImpl(int index, int x, int y, Next next) {
+        super(index, x, y, next);
     }
 
     private int average(){
@@ -24,8 +26,11 @@ public class PointTrackImpl extends Point {
         return value;
     }
 
-    @Override
+
     public void process() {
+        next = super.next();
+        now = super.now();
+
         value[next] = average();
         value[next] = up(value[next]);
     }

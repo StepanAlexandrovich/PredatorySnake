@@ -1,19 +1,14 @@
 package com.bombacod.predatorysnake.core.matrix;
 
-public abstract class Next {
+public class Next {
     public final int[] table = {1,0};
     // dynamic
-    public int now = 0,next=table[now];
+    private int now = 0,next=table[now];
 
-    public abstract void process();
-
-    public void next(){
+    public void process(){
         next = table[now = table[now]];
     }
 
-    public void processNext(){
-        process();
-        next();
-    }
-
+    public int now() { return now; }
+    public int next() { return next; }
 }

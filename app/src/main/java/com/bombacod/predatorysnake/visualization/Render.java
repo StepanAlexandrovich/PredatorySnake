@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.bombacod.predatorysnake.core.Model;
+import com.bombacod.predatorysnake.core.layers.RectangleOptimization;
 import com.bombacod.predatorysnake.core.matrix.Matrix;
 import com.bombacod.predatorysnake.core.matrix.Point;
 import com.bombacod.predatorysnake.core.obstacle.Fence;
@@ -70,7 +71,7 @@ public class Render {   // Color.arb -> long -> remake
 
         text.drawText(model.gameStateText(), 50,side,50,Color.RED,canvas);
 
-        //test.process(canvas,model,side);
+        test.process(canvas,model,side);
     }
 
     //// objects ////

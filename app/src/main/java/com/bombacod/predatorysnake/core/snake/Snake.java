@@ -1,8 +1,8 @@
 package com.bombacod.predatorysnake.core.snake;
 
 import com.bombacod.predatorysnake.core.layers.Layer;
-import com.bombacod.predatorysnake.core.matrix.Point;
 import com.bombacod.predatorysnake.core.layers.Layers;
+import com.bombacod.predatorysnake.core.matrix.Point;
 import com.bombacod.predatorysnake.core.snake.body.Body;
 import com.bombacod.predatorysnake.core.snake.head.HeadEating;
 import com.bombacod.predatorysnake.core.snake.motors.Motor;
@@ -67,6 +67,6 @@ public class Snake {
         headEating.process(motor0,motor1);
         motor0.process(headEating);
         motor1.process(headEating);
-        body.process(headEating,motor0,motor1);
+        body.process(motor0,motor1);
     }
 }

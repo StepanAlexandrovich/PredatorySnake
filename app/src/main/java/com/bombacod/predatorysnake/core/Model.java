@@ -2,8 +2,10 @@ package com.bombacod.predatorysnake.core;
 
 import com.bombacod.predatorysnake.SpeedMeasurement;
 import com.bombacod.predatorysnake.core.bubbles.Bubbles;
-import com.bombacod.predatorysnake.core.matrix.Matrix;
 import com.bombacod.predatorysnake.core.layers.Layers;
+import com.bombacod.predatorysnake.core.layers.LayersOptimization;
+import com.bombacod.predatorysnake.core.matrix.Matrix;
+import com.bombacod.predatorysnake.core.layers.LayersSimple;
 import com.bombacod.predatorysnake.core.obstacle.Fence;
 import com.bombacod.predatorysnake.core.snake.Snake;
 
@@ -13,7 +15,6 @@ public class Model {
     private Snake snake;
     private Snake snakeTest;
     private Bubbles bubbles;
-    //private Square square;
     private Fence fence;
 
     private GameState gameState;
@@ -23,15 +24,15 @@ public class Model {
     public SpeedMeasurement speedMeasurement= new SpeedMeasurement(1000);
 
     public Model(int width, int height) {
-        layers = new Layers(width,height);
+        //layers = new LayersSimple(width,height);
+        layers = new LayersOptimization(width,height);
 
         snake = new Snake(1,1,2, layers);
         snakeTest = new Snake(2,3,4, layers);
         bubbles = new Bubbles(layers);
-        //square = new Square(1,0,0,10,10,layers);
-        fence = new Fence(1,layers);
+        fence = new Fence(1, layers);
 
-        gameState = new GameState(1500);
+        gameState = new GameState(4000);
 
         restart();
     }
@@ -74,9 +75,6 @@ public class Model {
 
     ///////////////////////////////////
     private void symmetryTest(){
-        speedMeasurement.process();/////////
-        ////////////////////////////////////
-
         if(restart){
             layers.reset();
             gameState.reset();
@@ -91,7 +89,6 @@ public class Model {
             snake.process();
             snakeTest.process();
         }
-
     }
 
     private void game(){
