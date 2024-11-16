@@ -1,4 +1,4 @@
-package com.bombacod.predatorysnake.core.bubbles;
+package com.bombacod.predatorysnake.core.objects.bubbles;
 
 import com.bombacod.predatorysnake.core.matrix.Matrix;
 import com.bombacod.predatorysnake.core.matrix.Point;

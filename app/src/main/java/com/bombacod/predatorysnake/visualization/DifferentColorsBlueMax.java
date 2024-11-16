@@ -2,15 +2,14 @@ package com.bombacod.predatorysnake.visualization;
 
 import android.graphics.Color;
 
-import com.bombacod.predatorysnake.core.matrix.Matrix;
 import com.bombacod.predatorysnake.core.matrix.Point;
 
 import java.util.HashMap;
 
-public class DifferentColors {
+public class DifferentColorsBlueMax {
     private HashMap<Integer,double[]> types;
 
-    public DifferentColors() {
+    public DifferentColorsBlueMax() {
         types = new HashMap<>();
         types.put(0,new double[]{0.0,0.0,1.0});
         types.put(1,new double[]{1.0,1.0,1.0});
@@ -40,12 +39,13 @@ public class DifferentColors {
 
     public int draw(Point point, double bright){
         int type = point.getType();
+
         int value = border((int)(point.getValue() * bright));
 
         double red = doubles(type)[0];
         double green = doubles(type)[1];
         double blue = doubles(type)[2];
 
-        return Color.argb(255,(int)(value*red),(int)(value*green),(int)(value*blue));
+        return Color.argb(255,(int)(value*red),(int)(value*green),255);
     }
 }

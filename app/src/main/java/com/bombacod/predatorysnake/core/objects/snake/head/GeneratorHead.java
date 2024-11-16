@@ -1,9 +1,11 @@
-package com.bombacod.predatorysnake.core.bubbles;
+package com.bombacod.predatorysnake.core.objects.snake.head;
 
+import com.bombacod.predatorysnake.core.interfaces.IsExisting;
 import com.bombacod.predatorysnake.core.matrix.Point;
+
 import java.util.List;
 
-class GeneratorBubble {
+public class GeneratorHead {
     private int power;
     private int lowerBorder;
 
@@ -14,12 +16,17 @@ class GeneratorBubble {
         this.lowerBorder = lowerBorder;
     }
 
-    public void process(List<Point> points){
+    private boolean isCore(Point point, IsExisting object0, IsExisting object1){
+        int index = point.index;
+        return point.getValue() > lowerBorder && !object0.isExisting(index) && !object1.isExisting(index);
+    }
+
+    public void process(List<Point> points, IsExisting object0, IsExisting object1){
         int mass = 0;
         int generation = 0;
 
         for (Point point : points) {
-            if(point.getValue() > lowerBorder){
+            if(isCore(point,object0,object1)){
                 mass += 1;
             }
         }
@@ -29,7 +36,7 @@ class GeneratorBubble {
         }
 
         for (Point point : points) {
-            if(point.getValue() > lowerBorder){
+            if(isCore(point,object0,object1)){
                 point.setValue(point.getValue() + generation);
             }
         }

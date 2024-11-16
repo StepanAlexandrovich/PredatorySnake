@@ -1,6 +1,7 @@
 package com.bombacod.predatorysnake.core.layers;
 
 import com.bombacod.predatorysnake.core.matrix.Next;
+import com.bombacod.predatorysnake.core.matrix.Point;
 
 public class LayersOptimization implements Layers{
     private int width,height,length;
@@ -17,7 +18,7 @@ public class LayersOptimization implements Layers{
         layer0 = new Layer(width, height, next, PointIdentityImpl::new);
         layer1 = new Layer(width, height, next, PointIdentityImpl::new);
         layer2 = new Layer(width, height, next, PointTrackImpl::new);
-        layer3 = new Layer(width, height, next, PointStaticImpl::new);
+        layer3 = new Layer(width, height, next, (index, x, y, next) -> new Point(index, x, y, next) {});
     }
 
     @Override
@@ -42,9 +43,9 @@ public class LayersOptimization implements Layers{
 
     @Override
     public void reset(){
-        layer0.getMatrix().fillMatrixExtra(0,0);
-        layer1.getMatrix().fillMatrixExtra(0,0);
-        layer2.getMatrix().fillMatrixExtra(200,0);
+        layer0.getMatrix().fillMatrixDouble(0,0);
+        layer1.getMatrix().fillMatrixDouble(0,0);
+        layer2.getMatrix().fillMatrixDouble(200,0);
 
         layer0.getCollectionOptimization().reset();
         layer1.getCollectionOptimization().reset();
@@ -62,8 +63,8 @@ public class LayersOptimization implements Layers{
     }
 
     private void updateTypes(){
-        layer0.getTypes().update();
-        layer1.getTypes().update();
+        layer0.getTypes().update(layer0.getCollectionOptimization().getList());
+        layer1.getTypes().update(layer1.getCollectionOptimization().getList());
 //        layer2.getTypes().update();
 //        layer3.getTypes().update();
     }

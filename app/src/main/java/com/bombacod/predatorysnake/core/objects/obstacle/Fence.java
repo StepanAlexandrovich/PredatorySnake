@@ -1,4 +1,4 @@
-package com.bombacod.predatorysnake.core.obstacle;
+package com.bombacod.predatorysnake.core.objects.obstacle;
 
 import com.bombacod.predatorysnake.core.interfaces.IsExisting;
 import com.bombacod.predatorysnake.core.layers.Layers;
@@ -9,31 +9,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Fence implements IsExisting {
-    private int type;
+    private int mark;
     private List<Point> points;
     private Matrix matrixMark,matrixHead,matrixMotors;
 
-    public Fence(int type, Layers layers) {
-        this.type = type;
+    public Fence(int mark, Layers layers) {
+        this.mark = mark;
 
         matrixMark = layers.getLayer3().getMatrix();
+
         for (Point point : matrixMark.getPoints()) {
-            //point.setType(type);
-            point.type[0] = type; // remake
-            point.type[1] = type;
+            point.mark = mark;
         }
 
         for (int y = 1; y < matrixMark.getHeight() - 1; y++) {
             for (int x = 1; x < matrixMark.getWidth() - 1; x++) {
-                //matrixMark.getPoint(x,y).reset();
-                matrixMark.getPoint(x,y).resetExtra(); // remake
+                matrixMark.getPoint(x,y).mark = 0;
             }
         }
 
         points = new ArrayList<>();
 
         for (Point point : matrixMark.getPoints()) {
-            if(point.getType() == type){
+            if(point.mark == mark){
                 points.add(point);
             }
         }
@@ -44,7 +42,7 @@ public class Fence implements IsExisting {
 
     @Override
     public boolean isExisting(int index) {
-        return matrixMark.getPoint(index).getType() == type;
+        return matrixMark.getPoint(index).mark == mark;
     }
 
     public void process(){

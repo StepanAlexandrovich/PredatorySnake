@@ -8,8 +8,7 @@ public abstract class Point {
     // dynamic
     public final int[] value = new int[2];
     public final int[] type = new int[2];
-
-    public boolean b,b1;
+    public int mark;
 
     public Point(int index, int x, int y,Next next) {
         this.index = index;
@@ -31,28 +30,30 @@ public abstract class Point {
         value[now()]  = v;
         return this;
     }
+    public Point setValueDouble(int v) {
+        value[0]  = v;
+        value[1]  = v;
+        return this;
+    }
     public Point setType(int v){
         type[now()] = v;
         return this;
+    }
+    public Point setTypeDouble(int v){
+        type[0] = v;
+        type[1] = v;
+        return this;
+    }
+
+    public void reset(){
+        setValue(0).setType(0);
     }
 
     public void addValue(int v) {
         value[now()] += v;
     }
 
-    public void reset(){
-        value[now()] = 0;
-        type[now()] = 0;
-    }
-
-    public void resetExtra(){
-        value[0] = 0;
-        value[1] = 0;
-        type[0] = 0;
-        type[1] = 0;
-    }
-
-    public abstract void process();
+    public void process(){};
 
     // change vector
     public static int right(int vector){

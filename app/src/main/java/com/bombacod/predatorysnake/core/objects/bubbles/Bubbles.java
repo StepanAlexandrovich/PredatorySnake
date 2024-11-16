@@ -1,4 +1,4 @@
-package com.bombacod.predatorysnake.core.bubbles;
+package com.bombacod.predatorysnake.core.objects.bubbles;
 
 import com.bombacod.predatorysnake.core.layers.Layer;
 import com.bombacod.predatorysnake.core.layers.Layers;
@@ -33,14 +33,11 @@ public class Bubbles {
         bubble.start(x,y,value);
     }
 
-    public void startMatrix(int xBase,int yBase,int startType,int side,int multiplication){
-        int type = startType;
-        for (int y = 0; y < side; y++) {
-            for (int x = 0; x < side; x++) {
-                start(xBase + x*multiplication,yBase + y*multiplication,5000,type);
-                type++;
-            }
-        }
+    public void startFour(int xCenter,int yCenter,int startType,int side,int value){
+        start(xCenter - side,yCenter - side - 1,value,startType + 0);
+        start(xCenter + side + 1,yCenter - side,value,startType + 1);
+        start(xCenter + side,yCenter + side + 1,value,startType + 2);
+        start(xCenter - side - 1,yCenter + side,value,startType + 3);
     }
 
     ////////////////////////

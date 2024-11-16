@@ -3,8 +3,10 @@ package com.bombacod.predatorysnake;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 
 import com.bombacod.predatorysnake.core.Model;
 
@@ -25,30 +27,26 @@ public class MainActivity extends AppCompatActivity {
             super(context);
             getHolder().addCallback(this);
 
-            setOnTouchListener((view, motionEvent) -> {
+            setOnTouchListener(new OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    int x = (int) motionEvent.getX();
+                    int y = (int) motionEvent.getY();
 
-                int margin = (int)(getWidth()*0.4);
+                    loopCanvas.getButtonLeft().process(x,y,() -> model.left());
+                    loopCanvas.getButtonRight().process(x,y,() -> model.right());
+                    loopCanvas.getButtonRestart().process(x,y,() -> model.restart());
 
-                int x0 = 0;
-                int x1 = 0 + margin;
-                int x2 = getWidth() - margin;
-                int x3 = getWidth();
-
-                float x = motionEvent.getX();
-                //float y = motionEvent.getY();
-
-                if(x > x0 && x < x1){ model.left();    }else
-                if(x > x1 && x < x2){ model.restart(); }else
-                if(x > x2 && x < x3){ model.right();   }
-
-                return  false;
+                    return false;
+                }
             });
+
         }
 
         @Override
         public void surfaceCreated(SurfaceHolder surfaceHolder) {
-            model = new Model(101,101);
-            loopModel = new LoopModel(model,50);
+            model = new Model(111,91);
+            loopModel = new LoopModel(model,15);
             loopCanvas = new LoopCanvas(surfaceHolder,model);
 
             loopCanvas.setRunning(true);

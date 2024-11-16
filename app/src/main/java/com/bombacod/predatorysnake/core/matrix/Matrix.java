@@ -69,13 +69,6 @@ public class Matrix {
     }
 
     ////////////////////////////////////////
-    public Matrix reset(){
-        for (Point point : points) {
-            point.reset();
-        }
-        return this;
-    }
-
     public Matrix fillMatrix(int value,int type){
         for (Point point : points) {
             point.setValue(value).setType(type);
@@ -83,7 +76,7 @@ public class Matrix {
         return this;
     }
 
-    public Matrix fillMatrixExtra(int value,int type){
+    public Matrix fillMatrixDouble(int value, int type){
         for (Point point : points) {
             point.value[0] = value;
             point.value[1] = value;
@@ -91,7 +84,7 @@ public class Matrix {
             point.type[0] = type;
             point.type[1] = type;
 
-            point.b = false;
+            point.mark = 0;
         }
         return this;
     }

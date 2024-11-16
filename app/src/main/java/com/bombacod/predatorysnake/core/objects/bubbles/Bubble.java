@@ -1,4 +1,4 @@
-package com.bombacod.predatorysnake.core.bubbles;
+package com.bombacod.predatorysnake.core.objects.bubbles;
 
 import com.bombacod.predatorysnake.core.MatrixObjectStandard;
 import com.bombacod.predatorysnake.core.UniversalMethods;
@@ -27,7 +27,7 @@ public class Bubble extends MatrixObjectStandard {
     //////////////////////
     public void process(){
         generator.process(getPoints());
-        UniversalMethods.decrease(getPoints(),-1);
+        UniversalMethods.decrease(getPoints(),-2);
     }
 
 }

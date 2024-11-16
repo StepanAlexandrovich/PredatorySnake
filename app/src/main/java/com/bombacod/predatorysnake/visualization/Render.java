@@ -1,123 +1,98 @@
 package com.bombacod.predatorysnake.visualization;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
+import android.support.v4.content.ContextCompat;
+import android.widget.ImageView;
 
 import com.bombacod.predatorysnake.core.Model;
-import com.bombacod.predatorysnake.core.layers.RectangleOptimization;
-import com.bombacod.predatorysnake.core.matrix.Matrix;
-import com.bombacod.predatorysnake.core.matrix.Point;
-import com.bombacod.predatorysnake.core.obstacle.Fence;
-import com.bombacod.predatorysnake.core.snake.Snake;
+import com.bombacod.predatorysnake.pf.GameState;
+import com.bombacod.predatorysnake.visualization.buttons.Button;
+import com.bombacod.predatorysnake.visualization.buttons.ButtonControl;
+import com.bombacod.predatorysnake.visualization.buttons.ButtonRestart;
 
-public class Render {   // Color.arb -> long -> remake
-    private Paint paint;
-    private Bitmap bitmap;
+public class Render {
+    private Animation animation;
+
+    private ButtonControl buttonLeft;
+    private ButtonControl buttonRight;
+    private ButtonRestart buttonRestart;
+
     private Text text;
-
-    private DifferentColors differentColors;
     private TestVisualization test = new TestVisualization();
 
-    public Render() { // избавиться
-        paint = new Paint();
+    private int widthAnimation, heightAnimation;
+    private int xLeft, xLeftMargin, xRightMargin, xRight, yTop, yBottom;
+
+    public Render() {
         text = new Text();
-
-        differentColors = new DifferentColors();
     }
 
-    private int border(int value){
-        if(value<-255) { value = -255; }
-        if(value>+255) { value = +255; }
-        return value;
+    public Button getButtonLeft() { return buttonLeft; }
+    public Button getButtonRight() { return buttonRight; }
+    public Button getButtonRestart() { return buttonRestart; }
+
+    private boolean start = true;
+
+    private void initialization(Model model,Canvas canvas){
+        int widthCanvas = canvas.getWidth();
+        int heightCanvas = canvas.getHeight();
+
+        heightAnimation = heightCanvas;
+        widthAnimation = (heightAnimation * model.getWidth())/model.getHeight();
+
+        int margin = (widthCanvas - widthAnimation)/2;
+        xLeft = 0;
+        xRight = widthCanvas;
+        yTop = 0;
+        yBottom = heightCanvas;
+
+        xLeftMargin =  xLeft + margin;
+        xRightMargin = xRight - margin;
+
+        animation = new Animation();
+        buttonLeft = new ButtonControl(xLeft, yTop, xLeftMargin, yBottom);
+        buttonRestart = new ButtonRestart(xLeftMargin, yTop, xRightMargin, yBottom);
+        buttonRight = new ButtonControl(xRightMargin, yTop, xRight, yBottom);
     }
 
-    public void draw(Canvas canvas, Model model){
-        if(bitmap == null){
-            bitmap = Bitmap.createBitmap(model.getWidth(),model.getHeight(),Bitmap.Config.RGB_565);
+    public void draw(Model model,Canvas canvas){
+        if(start){
+            initialization(model,canvas);
+            start = false;
         }
 
-        Snake snake = model.getSnake();
-        Snake snakeTest = model.getSnakeTest();
-        Fence fence = model.getFence();
+        animation.draw(model);
+        buttonRestart.draw(animation.getBitmap(),widthAnimation, heightAnimation,canvas);
 
-        int length = model.getLength();
+        buttonLeft.draw(canvas);
+        buttonRight.draw(canvas);
 
-        for(int i = 0;i < length;i++){
-            int x = model.getX(i);
-            int y = model.getY(i);
-
-            if(snake.isExisting(i)){
-                bitmap.setPixel(x,y, drawSnake(snake,i,10));
-            }else
-//            if(snakeTest.isExisting(i)){
-//                bitmap.setPixel(x,y, drawSnakeTest(snakeTest,i,10));
-//            }else
-            if(fence.isExisting(i)){
-                bitmap.setPixel(x,y, drawFence(model.getMatrix3(), i,10));
-            }else
-            if(model.getMatrix0().getPoint(i).getValue() > 0){ // remake
-                bitmap.setPixel(x,y, differentColors.draw(model.getMatrix0().getPoint(i),10));
-            }else
-            if(true){
-                bitmap.setPixel(x,y,drawTrack(model.getMatrix2(),i,0.5));
-            }
+        switch (model.gameState()){
+            case GameState.DEFEAT: text("DEFEAT", model.lastEvent(),canvas); break;
+            case GameState.PROCESS: text("", model.lastEvent(),canvas); break;
+            case GameState.WINNING: text("YOU WON !!!!", model.lastEvent(),canvas); break;
+            case GameState.INSTRUCTION: instruction(canvas); break;
         }
 
-        int side = canvas.getWidth();
-        Bitmap bitmapMultiplication = Bitmap.createScaledBitmap(bitmap,side,side, false);
-        canvas.drawBitmap(bitmapMultiplication,0,0,paint);
-
-        text.drawText(model.gameStateText(), 50,side,50,Color.RED,canvas);
-
-        test.process(canvas,model,side);
+        test.process(canvas,model,heightAnimation - 140);
     }
 
-    //// objects ////
-    private int drawSnake(Snake snake, int i, int bright){
-        int head = snake.getPointHead(i).getValue();
-        int motors = snake.getPointMotors(i).getValue();
+    private void instruction(Canvas canvas){
+        int shift = 50;
+        text.drawText("CLICK ME TO START",   xLeftMargin + 150, yTop + 200 - shift,50, Color.RED,canvas);
+        text.drawText("OR",                  xLeftMargin + 300, yTop + 400 - shift,50, Color.RED,canvas);
+        text.drawText("CLICK ME TO RESTART", xLeftMargin + 130, yTop + 600 - shift,50, Color.RED,canvas);
 
-        head = border(head * bright);
-        motors = border(motors * bright);
-
-        if(head>0 && motors == 255){
-            return Color.argb(255,motors,head/2,000);
-        }else
-        if(head>0 && motors == 0){
-            return differentColors.draw(snake.getPointHead(i),bright);
-        } else{
-            return Color.argb(255,motors,000,000);
-        }
+        text.drawTextCircle("LEFT",buttonLeft.xCenter(),buttonLeft.yCenter(),50,100,Color.RED,canvas);
+        text.drawTextCircle("RIGHT",buttonRight.xCenter(),buttonRight.yCenter(),50,100,Color.RED,canvas);
     }
 
-    private int drawTrack(Matrix matrixTrack,int i,double bright){
-        int track = matrixTrack.getPoint(i).getValue();
-        track = border((int)(track * bright));
-        if(track > 0){ track = track * 2; }
-        return Color.argb(255,000,000,track);
-    }
-
-    private int drawFence(Matrix matrix,int i,double bright){
-        int value = matrix.getPoint(i).getValue();
-        value = border((int)(value * bright));
-        return Color.argb(255,000,255,255);
-    }
-
-    // future
-    private int drawSnakeTest(Snake snake, int i, int bright){
-        int head = snake.getPointHead(i).getValue();
-        int motors = snake.getPointMotors(i).getValue();
-
-        head = border(head * bright);
-        motors = border(motors * bright);
-
-        if(head>0 && motors == 255){
-            return Color.argb(255,head/2,motors,000);
-        }else{
-            return Color.argb(255,000,motors,000);
-        }
+    private void text(String content,String commit,Canvas canvas){
+        text.drawText(content, xLeftMargin + 10, yBottom - 10,150, Color.RED,canvas);
+        text.drawText(commit, xRightMargin + 50, yBottom - 50,30, Color.RED,canvas);
     }
 
 }

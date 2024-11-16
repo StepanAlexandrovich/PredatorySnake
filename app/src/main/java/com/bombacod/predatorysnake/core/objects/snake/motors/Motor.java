@@ -1,4 +1,4 @@
-package com.bombacod.predatorysnake.core.snake.motors;
+package com.bombacod.predatorysnake.core.objects.snake.motors;
 
 import com.bombacod.predatorysnake.core.MatrixObjectStandard;
 import com.bombacod.predatorysnake.core.UniversalMethods;

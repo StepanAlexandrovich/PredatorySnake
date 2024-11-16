@@ -1,30 +1,36 @@
 package com.bombacod.predatorysnake.core;
 
 import com.bombacod.predatorysnake.SpeedMeasurement;
-import com.bombacod.predatorysnake.core.bubbles.Bubbles;
+import com.bombacod.predatorysnake.core.objects.bubbles.Bubbles;
 import com.bombacod.predatorysnake.core.layers.Layers;
 import com.bombacod.predatorysnake.core.layers.LayersOptimization;
 import com.bombacod.predatorysnake.core.matrix.Matrix;
-import com.bombacod.predatorysnake.core.layers.LayersSimple;
-import com.bombacod.predatorysnake.core.obstacle.Fence;
-import com.bombacod.predatorysnake.core.snake.Snake;
+import com.bombacod.predatorysnake.core.objects.obstacle.Fence;
+import com.bombacod.predatorysnake.core.objects.snake.Snake;
+import com.bombacod.predatorysnake.pf.GameState;
 
 public class Model {
-    private Layers layers;
+    // loop control
+    private int gameState;
+    private boolean restart;
 
+    // timing
+    private int step;
+    // habitat
+    private Layers layers;
+    // objects
     private Snake snake;
     private Snake snakeTest;
     private Bubbles bubbles;
     private Fence fence;
 
-    private GameState gameState;
-    private boolean restart;
+    private CalculationGameState calculationGameState;
 
     // test
     public SpeedMeasurement speedMeasurement= new SpeedMeasurement(1000);
 
     public Model(int width, int height) {
-        //layers = new LayersSimple(width,height);
+//        layers = new LayersSimple(width,height);
         layers = new LayersOptimization(width,height);
 
         snake = new Snake(1,1,2, layers);
@@ -32,9 +38,10 @@ public class Model {
         bubbles = new Bubbles(layers);
         fence = new Fence(1, layers);
 
-        gameState = new GameState(4000);
+        calculationGameState = new CalculationGameState(4000);
 
-        restart();
+        //restart();
+        gameState = GameState.INSTRUCTION;
     }
 
     // layers encapsulation
@@ -54,9 +61,8 @@ public class Model {
     public int getX(int index){ return layers.getX(index); }
     public int getY(int index){ return layers.getY(index); }
 
-    // gameState encapsulation
-    public int getStep() { return gameState.getStep(); }
-    public String gameStateText() { return gameState.text(); }
+    public int getStep() { return step; }
+    public int gameState(){ return gameState; }
 
     // objects
     public Bubbles getBubbles() { return bubbles; }
@@ -64,24 +70,29 @@ public class Model {
     public Snake getSnakeTest() { return snakeTest; }
     public Fence getFence() { return fence; }
 
-    // control
-    public void right(){
-        snake.right();
+    // game control
+    public void directly(){
+        // do it
     }
-    public void left(){
-        snake.left();
-    }
+
+    public void right() { snake.right(); }
+    public void left()  { snake.left(); }
     public void restart(){ restart = true; }
+
+    // not necessarily
+    public String lastEvent() {
+        return calculationGameState.getLastEvent();
+    }
 
     ///////////////////////////////////
     private void symmetryTest(){
         if(restart){
             layers.reset();
-            gameState.reset();
 
             int xCenter = getWidth()/2;
-            snake.start(xCenter - 15,0,"right");
-            snakeTest.start(xCenter + 15,0,"left");
+            int yCenter = getHeight()/2;
+            snake.start(xCenter - 15,yCenter,"left",10000);
+            snakeTest.start(xCenter + 15,yCenter,"right",10000);
 
             restart = false;
         }else{
@@ -91,36 +102,45 @@ public class Model {
         }
     }
 
+    private void reset(){
+        step = 0;
+        layers.reset();
+        snake.restoreTypeHead();
+        // bubbles do it
+    }
+
     private void game(){
         speedMeasurement.process();/////////
         ////////////////////////////////////
 
         if(restart){
-            layers.reset();
-            gameState.reset();
+            reset();
+            gameState = GameState.PROCESS;
 
-            snake.restoreTypeHead();
-            snake.start(+15,+80,"right");
-            bubbles.startMatrix(40,40,2,2,10);
-            //bubbles.start(50,50,5000,2);
             restart = false;
         }else
-        if(gameState.isProcess()){
+        if(gameState == GameState.PROCESS){
+            if(step == 0){
+                snake.start(+15,+80,"right",10000);
+                bubbles.startFour(getWidth()/2,getHeight()/2,2,5,4000);
+//                bubbles.start(50,50,5000,2);
+            }
+
             layers.process();
 
             snake.process();
-
             bubbles.deleteBubble(snake.getTypeHead());
             bubbles.process();
             fence.process();
 
-            gameState.process(bubbles,snake);
+            gameState = calculationGameState.state(bubbles,snake,step);
+            step++;
         }
 
     }
 
     public void process(){
-        //symmetryTest();
+//        symmetryTest();
         game();
     }
 }

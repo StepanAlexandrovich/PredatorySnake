@@ -1,4 +1,4 @@
-package com.bombacod.predatorysnake.core.snake.head;
+package com.bombacod.predatorysnake.core.objects.snake.head;
 
 import com.bombacod.predatorysnake.core.layers.Layer;
 import com.bombacod.predatorysnake.core.matrix.Point;

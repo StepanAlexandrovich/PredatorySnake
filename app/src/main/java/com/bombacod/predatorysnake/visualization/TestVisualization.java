@@ -23,7 +23,7 @@ public class TestVisualization {
         paint.setColor(Color.BLACK);
         canvas.drawRect(0,side,side,side + 300,paint);
 
-        symmetryTest(canvas,model.getMatrix1());
+//        symmetryTest(canvas,model.getMatrix1());
 //        timerTest(canvas,side);
 //        speedTestRendering(canvas,side);
         speedTestModel(canvas,model,side);
@@ -36,7 +36,7 @@ public class TestVisualization {
         }else{
             paint.setColor(Color.RED);
         }
-        canvas.drawRect(0,800,100,900,paint);
+        canvas.drawRect(0,300,100,900,paint);
     }
 
     private void timerTest(Canvas canvas,int side){

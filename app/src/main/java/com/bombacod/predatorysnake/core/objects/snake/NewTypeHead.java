@@ -1,4 +1,4 @@
-package com.bombacod.predatorysnake.core.snake;
+package com.bombacod.predatorysnake.core.objects.snake;
 
 import com.bombacod.predatorysnake.core.interfaces.PointsFunctions;
 import com.bombacod.predatorysnake.core.matrix.Point;
@@ -25,13 +25,7 @@ public class NewTypeHead {
         }
 
         for (int i = 0; i < numberOfTypes; i++) {
-            if(a[i] > 0 && b[i] > 0 && i == head.getType()){
-                return i;
-            }
-        }
-
-        for (int i = 0; i < numberOfTypes; i++) {
-            if(a[i] > 0 && b[i] > 0){
+            if(a[i] > 0 && b[i] > 0 && head.getPoints().size() == 0){
                 return i;
             }
         }

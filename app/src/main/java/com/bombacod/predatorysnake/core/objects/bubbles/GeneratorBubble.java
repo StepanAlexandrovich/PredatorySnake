@@ -1,12 +1,9 @@
-package com.bombacod.predatorysnake.core.snake.motors;
+package com.bombacod.predatorysnake.core.objects.bubbles;
 
-import com.bombacod.predatorysnake.core.MatrixObjectStandard;
-import com.bombacod.predatorysnake.core.interfaces.IsExisting;
 import com.bombacod.predatorysnake.core.matrix.Point;
-
 import java.util.List;
 
-public class GeneratorMotor {
+class GeneratorBubble {
     private int power;
     private int lowerBorder;
 
@@ -17,16 +14,12 @@ public class GeneratorMotor {
         this.lowerBorder = lowerBorder;
     }
 
-    private boolean isCorePoint(Point point, IsExisting object){
-        return point.getValue() > lowerBorder && object.isExisting(point.index);
-    }
-
-    public void process(List<Point> points, IsExisting object){
+    public void process(List<Point> points){
         int mass = 0;
         int generation = 0;
 
         for (Point point : points) {
-            if(isCorePoint(point,object)){
+            if(point.getValue() > lowerBorder){
                 mass += 1;
             }
         }
@@ -36,7 +29,7 @@ public class GeneratorMotor {
         }
 
         for (Point point : points) {
-            if(isCorePoint(point,object)){
+            if(point.getValue() > lowerBorder){
                 point.setValue(point.getValue() + generation);
             }
         }

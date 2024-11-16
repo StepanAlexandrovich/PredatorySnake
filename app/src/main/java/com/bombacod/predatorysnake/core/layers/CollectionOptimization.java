@@ -16,7 +16,9 @@ public class CollectionOptimization {
         this.matrix = matrix;
     }
 
-    private boolean isValueAround(Point point,int zeroValue){
+    public List<Point> getList() { return list; }
+
+    private boolean isValueAround(Point point, int zeroValue){
         for (Point point1 : point.points) {
             if(point1 != point && point1.getValue() != zeroValue){
                 return true;
@@ -27,8 +29,8 @@ public class CollectionOptimization {
 
     private void isZeroAroundInCollection(Point point,int zeroValue,List<Point> collection){
         for (Point point1 : point.points) {
-            if(point1 != point && point1.getValue() == zeroValue){
-                point1.b = true;
+            if(point1 != point && point1.getValue() == zeroValue && point1.mark == 0){
+                point1.mark = 1;
                 collection.add(point1);
             }
         }
@@ -47,24 +49,21 @@ public class CollectionOptimization {
         for (Point point : list) {
             if(point.getValue() == zeroValue){
                 if(!isValueAround(point,zeroValue)){
-                    point.b = false;
-                    point.value[0] = zeroValue;
-                    point.value[1] = zeroValue;
-                    point.type[0] = 0;
-                    point.type[1] = 0;
+                    point.mark = 0;
+                    point.setValueDouble(zeroValue).setTypeDouble(0);
                 }else{
-                    point.b = true;
+                    point.mark = 1;
                     buffer.add(point);
                 }
             }else
             if(point.getValue() != zeroValue){
-                if(point.b){
-                    point.b = false;
+                if(point.mark == 1){
+                    point.mark = 0;
                     buffer.add(point);
 
                     isZeroAroundInCollection(point,zeroValue,buffer);
                 }else{
-                    point.b = false;
+                    point.mark = 0;
                     buffer.add(point);
                 }
             }
@@ -75,9 +74,7 @@ public class CollectionOptimization {
         buffer = listOutdated;
         buffer.clear();
 
-        for (Point point : list) {
-            point.process();
-        }
+
     }
 
     public void process(int zeroValue){
@@ -85,6 +82,10 @@ public class CollectionOptimization {
             reset();
         }else{
             changeCollection(zeroValue);
+        }
+
+        for (Point point : list) {
+            point.process();
         }
     }
 

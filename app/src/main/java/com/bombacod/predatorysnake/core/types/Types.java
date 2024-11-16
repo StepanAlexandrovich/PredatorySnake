@@ -3,13 +3,12 @@ package com.bombacod.predatorysnake.core.types;
 import com.bombacod.predatorysnake.core.matrix.Matrix;
 import com.bombacod.predatorysnake.core.matrix.Point;
 
+import java.util.List;
+
 public class Types {
-    private Matrix matrix;
     private DataType[] dataTypes;
 
-    public Types(Matrix matrix) {
-        this.matrix = matrix;
-
+    public Types() {
         dataTypes = new DataType[20];
         for (int i = 0; i < dataTypes.length; i++) {
             dataTypes[i] = new DataType(i);
@@ -20,12 +19,21 @@ public class Types {
     public DataType getType(int index){
         return dataTypes[index];
     }
-    public Matrix getMatrix() { return matrix; }
 
-    public void update(){
+    public void update(Matrix matrix){
         reset();
 
         for (Point point : matrix.getPoints()) {
+            if(point.getType()!=0){
+                dataTypes[point.getType()].addPoint(point);
+            }
+        }
+    }
+
+    public void update(List<Point> points){
+        reset();
+
+        for (Point point : points) {
             if(point.getType()!=0){
                 dataTypes[point.getType()].addPoint(point);
             }

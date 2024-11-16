@@ -1,4 +1,4 @@
-package com.bombacod.predatorysnake.core.snake.head;
+package com.bombacod.predatorysnake.core.objects.snake.head;
 
 import com.bombacod.predatorysnake.core.UniversalMethods;
 import com.bombacod.predatorysnake.core.interfaces.PointsFunctions;
@@ -7,21 +7,22 @@ import com.bombacod.predatorysnake.core.matrix.Point;
 import java.util.List;
 
 public class Control {
+    public double MAX = 1.5,MIN = 0.3;  // remake
     private double coefficient0,coefficient1;
 
     public void directly(){
-        coefficient0 = 1.0;
-        coefficient1 = 1.0;
+        coefficient0 = MIN;
+        coefficient1 = MIN;
     }
 
     public void right(){
-        coefficient0 = 1.5;
-        coefficient1 = 0.3;
+        coefficient0 = MAX;
+        coefficient1 = MIN;
     }
 
     public void left(){
-        coefficient0 = 0.3;
-        coefficient1 = 1.5;
+        coefficient0 = MIN;
+        coefficient1 = MAX;
     }
 
     public void process(List<Point> points, PointsFunctions object0, PointsFunctions object1){

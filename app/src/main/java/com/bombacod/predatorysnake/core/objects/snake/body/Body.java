@@ -1,4 +1,4 @@
-package com.bombacod.predatorysnake.core.snake.body;
+package com.bombacod.predatorysnake.core.objects.snake.body;
 
 import com.bombacod.predatorysnake.core.interfaces.IsExisting;
 import com.bombacod.predatorysnake.core.layers.Layer;
@@ -17,7 +17,7 @@ public class Body {
             int index = point.index;
 
             if(motor0.isExisting(index) || motor1.isExisting(index)){
-                point.reset();
+                point.setValue(0).setType(0);
             }
         }
     }

@@ -1,6 +1,8 @@
 package com.bombacod.predatorysnake.core.layers;
 
+import com.bombacod.predatorysnake.core.matrix.CreatePoint;
 import com.bombacod.predatorysnake.core.matrix.Next;
+import com.bombacod.predatorysnake.core.matrix.Point;
 
 public class LayersSimple implements Layers{
     private int width,height,length;
@@ -17,7 +19,7 @@ public class LayersSimple implements Layers{
         layer0 = new Layer(width, height, next, PointIdentityImpl::new);
         layer1 = new Layer(width, height, next, PointIdentityImpl::new);
         layer2 = new Layer(width, height, next, PointTrackImpl::new);
-        layer3 = new Layer(width, height, next, PointStaticImpl::new);
+        layer3 = new Layer(width, height, next, (index, x, y, next) -> new Point(index, x, y, next) {});
     }
 
     @Override
@@ -58,8 +60,8 @@ public class LayersSimple implements Layers{
     }
 
     private void updateTypes(){
-        layer0.getTypes().update();
-        layer1.getTypes().update();
+        layer0.getTypes().update(layer0.getMatrix());
+        layer1.getTypes().update(layer1.getMatrix());
 //        layer2.getTypes().update();
 //        layer3.getTypes().update();
     }

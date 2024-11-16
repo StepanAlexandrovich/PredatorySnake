@@ -5,6 +5,7 @@ import android.view.SurfaceHolder;
 
 import com.bombacod.predatorysnake.core.Model;
 import com.bombacod.predatorysnake.visualization.Render;
+import com.bombacod.predatorysnake.visualization.buttons.Button;
 
 public class LoopCanvas extends ThreadLoop{
     private SurfaceHolder surfaceHolder;
@@ -19,6 +20,11 @@ public class LoopCanvas extends ThreadLoop{
         this.render = new Render();
     }
 
+    // encapsulation Render
+    public Button getButtonLeft() { return render.getButtonLeft(); }
+    public Button getButtonRight() { return render.getButtonRight(); }
+    public Button getButtonRestart() { return render.getButtonRestart(); }
+
     @Override
     public void process() {
         Canvas canvas = null;
@@ -26,7 +32,7 @@ public class LoopCanvas extends ThreadLoop{
 
             canvas = surfaceHolder.lockCanvas();
             if(canvas != null && model != null){
-                render.draw(canvas,model);
+                render.draw(model,canvas);
             }
 
         }finally {
