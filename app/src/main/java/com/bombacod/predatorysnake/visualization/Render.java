@@ -65,6 +65,9 @@ public class Render {
         }
 
         animation.draw(model);
+//        if(model.gameState() != GameState.INSTRUCTION){
+//            buttonRestart.draw(animation.getBitmap(),widthAnimation, heightAnimation,canvas);
+//        }
         buttonRestart.draw(animation.getBitmap(),widthAnimation, heightAnimation,canvas);
 
         buttonLeft.draw(canvas);
@@ -77,7 +80,7 @@ public class Render {
             case GameState.INSTRUCTION: instruction(canvas); break;
         }
 
-        test.process(canvas,model,heightAnimation - 140);
+        //test.process(canvas,model,heightAnimation - 140);
     }
 
     private void instruction(Canvas canvas){

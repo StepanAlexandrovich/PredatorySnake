@@ -5,7 +5,8 @@ import com.bombacod.predatorysnake.core.objects.bubbles.Bubbles;
 import com.bombacod.predatorysnake.core.layers.Layers;
 import com.bombacod.predatorysnake.core.layers.LayersOptimization;
 import com.bombacod.predatorysnake.core.matrix.Matrix;
-import com.bombacod.predatorysnake.core.objects.obstacle.Fence;
+import com.bombacod.predatorysnake.core.objects.obstacles.Figures;
+import com.bombacod.predatorysnake.core.objects.obstacles.Obstacles;
 import com.bombacod.predatorysnake.core.objects.snake.Snake;
 import com.bombacod.predatorysnake.pf.GameState;
 
@@ -22,9 +23,13 @@ public class Model {
     private Snake snake;
     private Snake snakeTest;
     private Bubbles bubbles;
-    private Fence fence;
+    private Figures figures;
+    private Obstacles obstacles;
+
+    private int levelIndex;
 
     private CalculationGameState calculationGameState;
+    private StartGenerator startGenerator;
 
     // test
     public SpeedMeasurement speedMeasurement= new SpeedMeasurement(1000);
@@ -33,15 +38,24 @@ public class Model {
 //        layers = new LayersSimple(width,height);
         layers = new LayersOptimization(width,height);
 
+        // live objects
         snake = new Snake(1,1,2, layers);
         snakeTest = new Snake(2,3,4, layers);
         bubbles = new Bubbles(layers);
-        fence = new Fence(1, layers);
+        // static objects
+        figures = new Figures();
+        obstacles = new Obstacles(1,layers);;
 
         calculationGameState = new CalculationGameState(4000);
+        startGenerator = new StartGenerator().setCenterCoordinate(width/2,height/2);
 
-        //restart();
         gameState = GameState.INSTRUCTION;
+        reset();
+    }
+
+    public Model setLevelIndex(int levelIndex) {
+        this.levelIndex = levelIndex;
+        return this;
     }
 
     // layers encapsulation
@@ -63,12 +77,13 @@ public class Model {
 
     public int getStep() { return step; }
     public int gameState(){ return gameState; }
+    public int getLevelIndex() {return levelIndex; }
 
     // objects
     public Bubbles getBubbles() { return bubbles; }
     public Snake getSnake() { return snake; }
     public Snake getSnakeTest() { return snakeTest; }
-    public Fence getFence() { return fence; }
+    public Obstacles getObstacles() { return obstacles; }
 
     // game control
     public void directly(){
@@ -101,12 +116,17 @@ public class Model {
             snakeTest.process();
         }
     }
+    
+    public int getGameState(){ return gameState; }
 
     private void reset(){
         step = 0;
         layers.reset();
         snake.restoreTypeHead();
         // bubbles do it
+        obstacles
+                .setCoordinates(figures.emptyRectangle(layers.getWidth(),layers.getHeight(),0))
+                .process(); // delete( нужно пока для отрисовки инструкции )
     }
 
     private void game(){
@@ -120,18 +140,15 @@ public class Model {
             restart = false;
         }else
         if(gameState == GameState.PROCESS){
-            if(step == 0){
-                snake.start(+15,+80,"right",10000);
-                bubbles.startFour(getWidth()/2,getHeight()/2,2,5,4000);
-//                bubbles.start(50,50,5000,2);
-            }
+            if(step == 0){ startGenerator.start(levelIndex,bubbles,snake); }
 
             layers.process();
 
             snake.process();
             bubbles.deleteBubble(snake.getTypeHead());
             bubbles.process();
-            fence.process();
+//            fence.process();
+            obstacles.process();
 
             gameState = calculationGameState.state(bubbles,snake,step);
             step++;

@@ -84,7 +84,7 @@ public class Matrix {
             point.type[0] = type;
             point.type[1] = type;
 
-            point.mark = 0;
+            point.setMark(0);
         }
         return this;
     }

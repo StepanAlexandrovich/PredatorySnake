@@ -32,6 +32,16 @@ public class Head extends MatrixObjectStandard {
     }
 
     // encapsulation control
+    public Head setCoefficientMax(double coefficientMax) {
+        control.setCoefficientMax(coefficientMax);
+        return this;
+    }
+
+    public Head setCoefficientMin(double coefficientMin) {
+        control.setCoefficientMin(coefficientMin);
+        return this;
+    }
+
     public void directly(){
         control.directly();
         direction = Direction.DIRECTLY;

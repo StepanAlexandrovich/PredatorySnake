@@ -5,7 +5,7 @@ import android.graphics.Color;
 
 import com.bombacod.predatorysnake.core.Model;
 import com.bombacod.predatorysnake.core.matrix.Matrix;
-import com.bombacod.predatorysnake.core.objects.obstacle.Fence;
+import com.bombacod.predatorysnake.core.objects.obstacles.Obstacles;
 import com.bombacod.predatorysnake.core.objects.snake.Snake;
 import com.bombacod.predatorysnake.pf.Filling;
 
@@ -37,7 +37,7 @@ public class Animation { // Color.arb -> long -> remake
         }
 
         Snake snake = model.getSnake();
-        Fence fence = model.getFence();
+        Obstacles obstacles = model.getObstacles();
 
         int length = model.getLength();
 
@@ -48,7 +48,7 @@ public class Animation { // Color.arb -> long -> remake
             if(snake.isExisting(i)){
                 bitmap.setPixel(x,y, drawSnake(snake,i,brightSnake));
             }else
-            if(fence.isExisting(i)){
+            if(obstacles.isExisting(i)){
                 bitmap.setPixel(x,y, drawFence(model.getMatrix3(), i,10));
             }else
             // плохой подход

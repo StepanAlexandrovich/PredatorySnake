@@ -1,83 +1,111 @@
 package com.bombacod.predatorysnake;
 
-import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.view.MotionEvent;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 
-import com.bombacod.predatorysnake.core.Model;
+import com.bombacod.predatorysnake.pf.GameState;
+import com.bombacod.predatorysnake.pf.IntentKeyWords;
 
-public class MainActivity extends AppCompatActivity {
+import java.io.Serializable;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    private Button level1,level2,level3,level4;
+
+    private int topLevelIndex;
+    private DataBase dataBase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(new DrawView(this));
+        setContentView(R.layout.activity_main);
+
+        initialization();
     }
 
-    class DrawView extends SurfaceView implements SurfaceHolder.Callback {
-        private Model model;
-        private LoopModel loopModel;
-        private LoopCanvas loopCanvas;
+    private void initialization(){
+        (level1 = findViewById(R.id.level1)).setOnClickListener(this);
+        (level2 = findViewById(R.id.level2)).setOnClickListener(this);
+        (level3 = findViewById(R.id.level3)).setOnClickListener(this);
+        (level4 = findViewById(R.id.level4)).setOnClickListener(this);
 
-        public DrawView(Context context) {
-            super(context);
-            getHolder().addCallback(this);
+        dataBase = new DataBase(this);
+    }
 
-            setOnTouchListener(new OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    int x = (int) motionEvent.getX();
-                    int y = (int) motionEvent.getY();
+    @Override
+    public void onClick(View view) {
+        if(view.getId() == R.id.level1 && topLevelIndex >= 1){
+            newWindow(1);
+        }else
+        if(view.getId() == R.id.level2 && topLevelIndex >= 2){
+            newWindow(2);
+        }else
+        if(view.getId() == R.id.level3 && topLevelIndex >= 3){
+            newWindow(3);
+        }else
+        if(view.getId() == R.id.level4 && topLevelIndex >= 4){
+            newWindow(4);
+        }
+    }
 
-                    loopCanvas.getButtonLeft().process(x,y,() -> model.left());
-                    loopCanvas.getButtonRight().process(x,y,() -> model.right());
-                    loopCanvas.getButtonRestart().process(x,y,() -> model.restart());
-
-                    return false;
-                }
-            });
+    private void newWindow(int levelIndex){
+        try {
+            Intent intent = new Intent(this, GameActivity.class);
+            intent.putExtra(IntentKeyWords.LEVEL_INDEX,levelIndex);
+            startActivity(intent);
+            finish();
+        }catch (Exception e){
 
         }
+    }
 
-        @Override
-        public void surfaceCreated(SurfaceHolder surfaceHolder) {
-            model = new Model(111,91);
-            loopModel = new LoopModel(model,15);
-            loopCanvas = new LoopCanvas(surfaceHolder,model);
+    @Override
+    protected void onStart() {
+        super.onStart();
 
-            loopCanvas.setRunning(true);
-            loopModel.setRunning(true);
+        Serializable levelDto = getIntent().getSerializableExtra(IntentKeyWords.LEVEL_DTO);
+        topLevelIndex = dataBase.getTopLevelIndex();
 
-            loopCanvas.start();
-            loopModel.start();
-        }
-
-        @Override
-        public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {
-        }
-
-        @Override
-        public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-            boolean retry = true;
-            loopModel.setRunning(false);
-            loopCanvas.setRunning(false);
-            while (retry){
-
-                try {
-                    loopModel.join();
-                    loopCanvas.join();
-
-                    retry = false;
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
+        if(levelDto != null){
+            LevelDto level = (LevelDto) levelDto;
+            if(level.getIndex() == topLevelIndex && level.getGameState() == GameState.WINNING){
+                topLevelIndex++;
+                dataBase.setTopLevelIndex(topLevelIndex);
             }
         }
 
+        buttonsVisualization(topLevelIndex);
     }
+
+    private void buttonsVisualization(int topLevelIndex){
+        if(topLevelIndex == 1){
+            level1.setBackgroundColor(Color.RED);
+        }
+        if(topLevelIndex == 2){
+            level2.setBackgroundColor(Color.RED);
+        }
+        if(topLevelIndex == 3){
+            level3.setBackgroundColor(Color.RED);
+        }
+        if(topLevelIndex == 4){
+            level4.setBackgroundColor(Color.RED);
+        }
+
+        if(topLevelIndex > 1){
+            level1.setBackgroundColor(Color.GREEN);
+        }
+        if(topLevelIndex > 2){
+            level2.setBackgroundColor(Color.GREEN);
+        }
+        if(topLevelIndex > 3){
+            level3.setBackgroundColor(Color.GREEN);
+        }
+        if(topLevelIndex > 4){
+            level4.setBackgroundColor(Color.GREEN);
+        }
+    }
+
 }

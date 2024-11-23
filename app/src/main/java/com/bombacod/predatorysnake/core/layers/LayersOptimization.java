@@ -46,6 +46,7 @@ public class LayersOptimization implements Layers{
         layer0.getMatrix().fillMatrixDouble(0,0);
         layer1.getMatrix().fillMatrixDouble(0,0);
         layer2.getMatrix().fillMatrixDouble(200,0);
+        layer3.getMatrix().fillMatrixDouble(0,0);
 
         layer0.getCollectionOptimization().reset();
         layer1.getCollectionOptimization().reset();

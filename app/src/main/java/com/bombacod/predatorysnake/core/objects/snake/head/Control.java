@@ -7,22 +7,36 @@ import com.bombacod.predatorysnake.core.matrix.Point;
 import java.util.List;
 
 public class Control {
-    public double MAX = 1.5,MIN = 0.3;  // remake
-    private double coefficient0,coefficient1;
+    public double coefficientMax,coefficientMin;
+    private double coefficientBetween;
+    // dynamic
+    public double coefficient0,coefficient1;
+
+    public void setCoefficientBetween(double coefficientBetween) {
+        this.coefficientBetween = coefficientBetween;
+    }
+
+    public void setCoefficientMax(double coefficientMax) {
+        this.coefficientMax = coefficientMax;
+    }
+
+    public void setCoefficientMin(double coefficientMin) {
+        this.coefficientMin = coefficientMin;
+    }
 
     public void directly(){
-        coefficient0 = MIN;
-        coefficient1 = MIN;
+        coefficient0 = coefficientBetween;
+        coefficient1 = coefficientBetween;
     }
 
     public void right(){
-        coefficient0 = MAX;
-        coefficient1 = MIN;
+        coefficient0 = coefficientMax;
+        coefficient1 = coefficientMin;
     }
 
     public void left(){
-        coefficient0 = MIN;
-        coefficient1 = MAX;
+        coefficient0 = coefficientMin;
+        coefficient1 = coefficientMax;
     }
 
     public void process(List<Point> points, PointsFunctions object0, PointsFunctions object1){

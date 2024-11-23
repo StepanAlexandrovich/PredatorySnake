@@ -29,8 +29,8 @@ public class CollectionOptimization {
 
     private void isZeroAroundInCollection(Point point,int zeroValue,List<Point> collection){
         for (Point point1 : point.points) {
-            if(point1 != point && point1.getValue() == zeroValue && point1.mark == 0){
-                point1.mark = 1;
+            if(point1 != point && point1.getValue() == zeroValue && point1.getMark() == 0){
+                point1.setMark(1);
                 collection.add(point1);
             }
         }
@@ -49,21 +49,21 @@ public class CollectionOptimization {
         for (Point point : list) {
             if(point.getValue() == zeroValue){
                 if(!isValueAround(point,zeroValue)){
-                    point.mark = 0;
+                    point.setMark(0);
                     point.setValueDouble(zeroValue).setTypeDouble(0);
                 }else{
-                    point.mark = 1;
+                    point.setMark(1);
                     buffer.add(point);
                 }
             }else
             if(point.getValue() != zeroValue){
-                if(point.mark == 1){
-                    point.mark = 0;
+                if(point.getMark() == 1){
+                    point.setMark(0);
                     buffer.add(point);
 
                     isZeroAroundInCollection(point,zeroValue,buffer);
                 }else{
-                    point.mark = 0;
+                    point.setMark(0);
                     buffer.add(point);
                 }
             }

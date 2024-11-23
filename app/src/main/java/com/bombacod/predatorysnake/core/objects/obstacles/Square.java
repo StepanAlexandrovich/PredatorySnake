@@ -1,4 +1,4 @@
-package com.bombacod.predatorysnake.core.objects.obstacle;
+package com.bombacod.predatorysnake.core.objects.obstacles;
 
 import com.bombacod.predatorysnake.core.layers.LayersSimple;
 import com.bombacod.predatorysnake.core.matrix.Matrix;

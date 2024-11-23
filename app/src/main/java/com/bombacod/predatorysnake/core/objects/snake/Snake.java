@@ -31,21 +31,33 @@ public class Snake {
 
         // settings
 
-        // good control
-        headEating.setLowerBorder(400).setPower(3000);
-        motor0.setLowerBorder(30).setPower(500);
-        motor1.setLowerBorder(30).setPower(500);
+        // the best
+        headEating.setLowerBorder(100).setPower(1000)
+                .setCoefficientMax(0.8)
+                .setCoefficientMin(0.1);
+        motor0.setLowerBorder(10).setPower(300);
+        motor1.setLowerBorder(10).setPower(300);
+
+          // good control
+//        headEating.setLowerBorder(400).setPower(3000)
+//                .setCoefficientMax(1.5)
+//                .setCoefficientMin(0.3);
+//        motor0.setLowerBorder(30).setPower(500);
+//        motor1.setLowerBorder(30).setPower(500);
 
         // haos
-//        headEating.setLowerBorder(600).setPower(5000);
+//        headEating.setLowerBorder(600).setPower(5000)
+//                .setCoefficientMax(1.5)
+//                .setCoefficientMin(0.3);
 //        motor0.setLowerBorder(20).setPower(1000);
 //        motor1.setLowerBorder(20).setPower(1000);
 
-//        headEating.setLowerBorder(1500).setPower(10000);
-//        headEating.control.MAX = 1.1;                         // remake
-//        headEating.control.MIN = 0.1;
-//        motor0.setLowerBorder(50).setPower(1600);
-//        motor1.setLowerBorder(50).setPower(1600);
+        // fast
+//        headEating.setLowerBorder(1500).setPower(8000)
+//                .setCoefficientMax(2.0)
+//                .setCoefficientMin(0.5);
+//        motor0.setLowerBorder(10).setPower(600);
+//        motor1.setLowerBorder(10).setPower(600);
 
         newTypeHead = new NewTypeHead();
     }
