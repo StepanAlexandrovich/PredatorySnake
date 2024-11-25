@@ -7,6 +7,7 @@ import android.graphics.Path;
 import android.support.v4.content.ContextCompat;
 import android.widget.ImageView;
 
+import com.bombacod.predatorysnake.Images;
 import com.bombacod.predatorysnake.core.Model;
 import com.bombacod.predatorysnake.pf.GameState;
 import com.bombacod.predatorysnake.visualization.buttons.Button;
@@ -64,11 +65,13 @@ public class Render {
             start = false;
         }
 
-        animation.draw(model);
-//        if(model.gameState() != GameState.INSTRUCTION){
-//            buttonRestart.draw(animation.getBitmap(),widthAnimation, heightAnimation,canvas);
-//        }
-        buttonRestart.draw(animation.getBitmap(),widthAnimation, heightAnimation,canvas);
+
+        if(model.gameState() == GameState.INSTRUCTION){
+            buttonRestart.draw(Images.instruction,widthAnimation,heightAnimation,canvas);
+        }else{
+            animation.draw(model);
+            buttonRestart.draw(animation.getBitmap(),widthAnimation, heightAnimation,canvas);
+        }
 
         buttonLeft.draw(canvas);
         buttonRight.draw(canvas);
@@ -84,13 +87,8 @@ public class Render {
     }
 
     private void instruction(Canvas canvas){
-        int shift = 50;
-        text.drawText("CLICK ME TO START",   xLeftMargin + 150, yTop + 200 - shift,50, Color.RED,canvas);
-        text.drawText("OR",                  xLeftMargin + 300, yTop + 400 - shift,50, Color.RED,canvas);
-        text.drawText("CLICK ME TO RESTART", xLeftMargin + 130, yTop + 600 - shift,50, Color.RED,canvas);
-
-        text.drawTextCircle("LEFT",buttonLeft.xCenter(),buttonLeft.yCenter(),50,100,Color.RED,canvas);
-        text.drawTextCircle("RIGHT",buttonRight.xCenter(),buttonRight.yCenter(),50,100,Color.RED,canvas);
+        text.drawTextCircle("LEFT",buttonLeft.xCenter(),buttonLeft.yCenter(),buttonLeft.getRadius()/2,buttonLeft.getRadius(),Color.RED,canvas);
+        text.drawTextCircle("RIGHT",buttonRight.xCenter(),buttonRight.yCenter(),buttonLeft.getRadius()/2,buttonLeft.getRadius(),Color.RED,canvas);
     }
 
     private void text(String content,String commit,Canvas canvas){

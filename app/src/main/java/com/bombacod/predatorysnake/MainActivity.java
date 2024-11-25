@@ -1,11 +1,14 @@
 package com.bombacod.predatorysnake;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.bombacod.predatorysnake.pf.GameState;
 import com.bombacod.predatorysnake.pf.IntentKeyWords;
@@ -13,7 +16,8 @@ import com.bombacod.predatorysnake.pf.IntentKeyWords;
 import java.io.Serializable;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private Button level1,level2,level3,level4;
+    private final int numberOfLevels = 5;
+    private final Button[] levels = new Button[numberOfLevels];
 
     private int topLevelIndex;
     private DataBase dataBase;
@@ -27,28 +31,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initialization(){
-        (level1 = findViewById(R.id.level1)).setOnClickListener(this);
-        (level2 = findViewById(R.id.level2)).setOnClickListener(this);
-        (level3 = findViewById(R.id.level3)).setOnClickListener(this);
-        (level4 = findViewById(R.id.level4)).setOnClickListener(this);
+        LinearLayout list = findViewById(R.id.list_levels);
+
+        for (int i = 1; i <= numberOfLevels; i++) {
+            Button button = new Button(this);
+            button.setId(i);
+            button.setText("level" + i);
+            button.setOnClickListener(this);
+            list.addView(button);
+
+            levels[i - 1] = button;
+        }
 
         dataBase = new DataBase(this);
+        Images.instruction = BitmapFactory.decodeResource(getResources(),R.drawable.instruction);  // bad decision
     }
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.level1 && topLevelIndex >= 1){
-            newWindow(1);
-        }else
-        if(view.getId() == R.id.level2 && topLevelIndex >= 2){
-            newWindow(2);
-        }else
-        if(view.getId() == R.id.level3 && topLevelIndex >= 3){
-            newWindow(3);
-        }else
-        if(view.getId() == R.id.level4 && topLevelIndex >= 4){
-            newWindow(4);
+        int id = view.getId();
+
+        for (int i = 1; i <= numberOfLevels; i++) {
+            if(view.getId() == i && topLevelIndex >= i){
+                newWindow(i);
+            }
         }
+
     }
 
     private void newWindow(int levelIndex){
@@ -80,32 +88,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonsVisualization(topLevelIndex);
     }
 
+    @SuppressLint("ResourceType")
     private void buttonsVisualization(int topLevelIndex){
-        if(topLevelIndex == 1){
-            level1.setBackgroundColor(Color.RED);
-        }
-        if(topLevelIndex == 2){
-            level2.setBackgroundColor(Color.RED);
-        }
-        if(topLevelIndex == 3){
-            level3.setBackgroundColor(Color.RED);
-        }
-        if(topLevelIndex == 4){
-            level4.setBackgroundColor(Color.RED);
+        for (Button level : levels) {
+            if(level.getId() == topLevelIndex){
+                level.setBackgroundColor(Color.RED);
+            }
         }
 
-        if(topLevelIndex > 1){
-            level1.setBackgroundColor(Color.GREEN);
+        for (Button level : levels) {
+            if(level.getId() < topLevelIndex){
+                level.setBackgroundColor(Color.GREEN);
+            }
         }
-        if(topLevelIndex > 2){
-            level2.setBackgroundColor(Color.GREEN);
-        }
-        if(topLevelIndex > 3){
-            level3.setBackgroundColor(Color.GREEN);
-        }
-        if(topLevelIndex > 4){
-            level4.setBackgroundColor(Color.GREEN);
-        }
+
     }
 
 }

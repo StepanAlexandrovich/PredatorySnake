@@ -5,7 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 public class ButtonControl extends Button{
-    private int xCenter,yCenter;
+    private int xCenter,yCenter,radius;
     private Paint paint;
 
     public ButtonControl(int x0, int y0, int x1, int y1) {
@@ -13,21 +13,23 @@ public class ButtonControl extends Button{
 
         xCenter = (x0 + x1)/2;
         yCenter = (y0 + y1)/2;
+        radius = (x1 - x0)/5;
 
         paint = new Paint();
     }
 
     public int xCenter() { return xCenter; }
     public int yCenter() { return yCenter; }
+    public int getRadius() { return radius; }
 
     public void draw(Canvas canvas){
         int rad = 0;
 
         if(isClick()){
-            rad = 80;
+            rad = radius + radius/10;
             resetIsClick();
         } else {
-            rad = 50;
+            rad = radius;
         }
 
         drawRectangle(x0,y0,x1,y1,Color.BLACK,canvas);

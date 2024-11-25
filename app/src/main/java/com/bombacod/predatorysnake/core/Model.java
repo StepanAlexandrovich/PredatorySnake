@@ -124,9 +124,7 @@ public class Model {
         layers.reset();
         snake.restoreTypeHead();
         // bubbles do it
-        obstacles
-                .setCoordinates(figures.emptyRectangle(layers.getWidth(),layers.getHeight(),0))
-                .process(); // delete( нужно пока для отрисовки инструкции )
+        obstacles.setCoordinates(figures.emptyRectangle(layers.getWidth(),layers.getHeight(),0));
     }
 
     private void game(){
