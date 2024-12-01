@@ -13,9 +13,17 @@ public class ButtonRestart extends Button{
         paint = new Paint();
     }
 
-    public void draw(Bitmap bitmap, int widthImage,int heightImage,Canvas canvas){
-        Bitmap image = Bitmap.createScaledBitmap(bitmap, widthImage, heightImage, false);
+    public void draw(Bitmap bitmap,Canvas canvas){
+        Bitmap image = Bitmap.createScaledBitmap(bitmap,width,height, false);
         canvas.drawBitmap(image,x0,y0,paint);
+    }
+
+    public void drawCenter(Bitmap bitmap, int widthImage,int heightImage,Canvas canvas){
+        int x = xCenter - widthImage/2;
+        int y = yCenter - heightImage/2;
+
+        Bitmap image = Bitmap.createScaledBitmap(bitmap,widthImage, heightImage,false);
+        canvas.drawBitmap(image,x,y,paint);
     }
 
 }

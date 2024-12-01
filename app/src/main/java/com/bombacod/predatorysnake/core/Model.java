@@ -10,10 +10,11 @@ import com.bombacod.predatorysnake.core.objects.obstacles.Obstacles;
 import com.bombacod.predatorysnake.core.objects.snake.Snake;
 import com.bombacod.predatorysnake.pf.GameState;
 
+import java.util.ArrayList;
+
 public class Model {
     // loop control
-    private int gameState;
-    private boolean restart;
+    private volatile int gameState;
 
     // timing
     private int step;
@@ -23,7 +24,6 @@ public class Model {
     private Snake snake;
     private Snake snakeTest;
     private Bubbles bubbles;
-    private Figures figures;
     private Obstacles obstacles;
 
     private int levelIndex;
@@ -43,19 +43,22 @@ public class Model {
         snakeTest = new Snake(2,3,4, layers);
         bubbles = new Bubbles(layers);
         // static objects
-        figures = new Figures();
-        obstacles = new Obstacles(1,layers);;
+        obstacles = new Obstacles(1,layers).setCoordinates(new ArrayList<>()); // remake
 
         calculationGameState = new CalculationGameState(4000);
-        startGenerator = new StartGenerator().setCenterCoordinate(width/2,height/2);
+        startGenerator = new StartGenerator(width, height).setCenterCoordinate(width/2,height/2);
 
-        gameState = GameState.INSTRUCTION;
+        gameState = GameState.WAITING;
         reset();
     }
 
     public Model setLevelIndex(int levelIndex) {
         this.levelIndex = levelIndex;
+        gameState = GameState.WAITING;
         return this;
+    }
+    public void setGameState(int gameState) {
+        this.gameState = gameState;
     }
 
     // layers encapsulation
@@ -92,7 +95,11 @@ public class Model {
 
     public void right() { snake.right(); }
     public void left()  { snake.left(); }
-    public void restart(){ restart = true; }
+    public void restart(){
+        if(gameState == GameState.WAITING){
+            gameState = GameState.RESTART;
+        }
+    }
 
     // not necessarily
     public String lastEvent() {
@@ -101,7 +108,7 @@ public class Model {
 
     ///////////////////////////////////
     private void symmetryTest(){
-        if(restart){
+        if(gameState == GameState.RESTART){
             layers.reset();
 
             int xCenter = getWidth()/2;
@@ -109,8 +116,9 @@ public class Model {
             snake.start(xCenter - 15,yCenter,"left",10000);
             snakeTest.start(xCenter + 15,yCenter,"right",10000);
 
-            restart = false;
-        }else{
+            gameState = GameState.PROCESS;
+        }else
+        if(gameState == GameState.PROCESS){
             layers.process();
             snake.process();
             snakeTest.process();
@@ -124,21 +132,19 @@ public class Model {
         layers.reset();
         snake.restoreTypeHead();
         // bubbles do it
-        obstacles.setCoordinates(figures.emptyRectangle(layers.getWidth(),layers.getHeight(),0));
+        obstacles.reset();
     }
 
     private void game(){
         speedMeasurement.process();/////////
         ////////////////////////////////////
 
-        if(restart){
+        if(gameState == GameState.RESTART){
             reset();
             gameState = GameState.PROCESS;
-
-            restart = false;
         }else
         if(gameState == GameState.PROCESS){
-            if(step == 0){ startGenerator.start(levelIndex,bubbles,snake); }
+            if(step == 0){ startGenerator.start(levelIndex,bubbles,snake,obstacles); }
 
             layers.process();
 

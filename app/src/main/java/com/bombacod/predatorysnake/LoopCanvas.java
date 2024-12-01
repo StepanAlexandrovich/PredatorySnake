@@ -13,34 +13,30 @@ public class LoopCanvas extends ThreadLoop{
     private Model model;
     private Render render;
 
-    public LoopCanvas(SurfaceHolder surfaceHolder, Model model) {
+    public LoopCanvas(SurfaceHolder surfaceHolder, Model model,Render render) {
         this.surfaceHolder = surfaceHolder;
 
         this.model = model;
-        this.render = new Render();
+        this.render = render;
     }
 
-    // encapsulation Render
-    public Button getButtonLeft() { return render.getButtonLeft(); }
-    public Button getButtonRight() { return render.getButtonRight(); }
-    public Button getButtonRestart() { return render.getButtonRestart(); }
-
     @Override
-    public void process() {
-        Canvas canvas = null;
-        try{
+    public void run() {
+        while (isRunning()){
+            Canvas canvas = null;
+            try{
 
-            canvas = surfaceHolder.lockCanvas();
-            if(canvas != null && model != null){
-                render.draw(model,canvas);
-            }
+                canvas = surfaceHolder.lockCanvas();
+                if(canvas != null && model != null){
+                    render.draw(model,canvas);
+                }
 
-        }finally {
-            if(canvas != null){
-                surfaceHolder.unlockCanvasAndPost(canvas);
+            }finally {
+                if(canvas != null){
+                    surfaceHolder.unlockCanvasAndPost(canvas);
+                }
             }
         }
-
     }
 
 }

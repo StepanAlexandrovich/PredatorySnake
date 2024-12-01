@@ -1,19 +1,11 @@
 package com.bombacod.predatorysnake;
 
 public abstract class ThreadLoop extends Thread{
-    private boolean running = false;
-
-    public void setRunning(boolean running) {
-        this.running = running;
+    private boolean running = true;
+    public void stopRun(){
+        running = false;
     }
-
-    public abstract void process();
-
-    @Override
-    public void run() {
-        while (running){
-            process();
-        }
+    public boolean isRunning() {
+        return running;
     }
-
 }

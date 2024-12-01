@@ -1,11 +1,8 @@
 package com.bombacod.predatorysnake.visualization;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Path;
-import android.support.v4.content.ContextCompat;
-import android.widget.ImageView;
 
 import com.bombacod.predatorysnake.Images;
 import com.bombacod.predatorysnake.core.Model;
@@ -66,34 +63,45 @@ public class Render {
         }
 
 
-        if(model.gameState() == GameState.INSTRUCTION){
-            buttonRestart.draw(Images.instruction,widthAnimation,heightAnimation,canvas);
+        if(model.gameState() == GameState.WAITING){
+            buttonRestart.draw(Images.restart,canvas);
         }else{
             animation.draw(model);
-            buttonRestart.draw(animation.getBitmap(),widthAnimation, heightAnimation,canvas);
+            buttonRestart.draw(animation.getBitmap(),canvas);
         }
 
         buttonLeft.draw(canvas);
         buttonRight.draw(canvas);
 
         switch (model.gameState()){
-            case GameState.DEFEAT: text("DEFEAT", model.lastEvent(),canvas); break;
-            case GameState.PROCESS: text("", model.lastEvent(),canvas); break;
-            case GameState.WINNING: text("YOU WON !!!!", model.lastEvent(),canvas); break;
-            case GameState.INSTRUCTION: instruction(canvas); break;
+            case GameState.DEFEAT:
+                drawImage(Images.defeat,canvas);
+                text(model.lastEvent(),canvas);
+                break;
+            case GameState.PROCESS:
+                text(model.lastEvent(),canvas);
+                break;
+            case GameState.WINNING:
+                drawImage(Images.win,canvas);
+                text(model.lastEvent(),canvas);
+                break;
+            case GameState.WAITING: waiting(canvas); break;
         }
 
         //test.process(canvas,model,heightAnimation - 140);
     }
 
-    private void instruction(Canvas canvas){
+    private void waiting(Canvas canvas){
         text.drawTextCircle("LEFT",buttonLeft.xCenter(),buttonLeft.yCenter(),buttonLeft.getRadius()/2,buttonLeft.getRadius(),Color.RED,canvas);
         text.drawTextCircle("RIGHT",buttonRight.xCenter(),buttonRight.yCenter(),buttonLeft.getRadius()/2,buttonLeft.getRadius(),Color.RED,canvas);
     }
 
-    private void text(String content,String commit,Canvas canvas){
-        text.drawText(content, xLeftMargin + 10, yBottom - 10,150, Color.RED,canvas);
+    private void text(String commit,Canvas canvas){
         text.drawText(commit, xRightMargin + 50, yBottom - 50,30, Color.RED,canvas);
+    }
+
+    private void drawImage(Bitmap image,Canvas canvas){
+        buttonRestart.drawCenter(image,widthAnimation/2,heightAnimation/2,canvas);
     }
 
 }

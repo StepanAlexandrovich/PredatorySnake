@@ -22,6 +22,10 @@ public class Obstacles implements IsExisting {
         matrixMotors = layers.getLayer1().getMatrix();
     }
 
+    public void reset(){
+        coordinates.clear();
+    }
+
     public Obstacles setCoordinates(List<Coordinate> coordinates){
         this.coordinates = coordinates;
         return this;

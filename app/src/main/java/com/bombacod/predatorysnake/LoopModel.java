@@ -11,11 +11,11 @@ public class LoopModel extends ThreadLoop{
         timer = new SimpleTimer(distance);
     }
 
-    @Override
-    public void process() {
-        if(timer.process()){ // fps
-            model.process();
-        }
-    }
+//    @Override
+//    public void process() {
+//        if(timer.process()){ // fps
+//            model.process();
+//        }
+//    }
 
 }
