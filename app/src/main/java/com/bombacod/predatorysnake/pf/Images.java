@@ -13,6 +13,8 @@ public class Images {
     private static Bitmap death;
     private static Bitmap win;
     private static Bitmap control;
+    private static Bitmap controlLeft;
+    private static Bitmap controlRight;
 
     public static void start(Context context){
         restart = BitmapFactory.decodeResource(context.getResources(),R.drawable.restart);  // bad decision
@@ -22,6 +24,8 @@ public class Images {
 
         win = BitmapFactory.decodeResource(context.getResources(),R.drawable.win);  // bad decision
         control = BitmapFactory.decodeResource(context.getResources(),R.drawable.control);  // bad decision
+        controlLeft = BitmapFactory.decodeResource(context.getResources(),R.drawable.left);  // bad decision
+        controlRight = BitmapFactory.decodeResource(context.getResources(),R.drawable.right);  // bad decision
     }
 
     public static Bitmap getRestart() { return restart; }
@@ -32,4 +36,7 @@ public class Images {
 
     public static Bitmap getWin() { return win; }
     public static Bitmap getControl() { return control; }
+
+    public static Bitmap getControlLeft() { return controlLeft; }
+    public static Bitmap getControlRight() { return controlRight; }
 }

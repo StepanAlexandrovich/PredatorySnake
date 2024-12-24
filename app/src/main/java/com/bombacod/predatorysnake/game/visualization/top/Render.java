@@ -73,8 +73,14 @@ public class Render {
 
         if(model.getStep()<15){ drawImageIncrease.reset(); } // грубое решение
 
-        buttonLeft.draw(canvas);
-        buttonRight.draw(canvas);
+        if(model.gameState() == GameState.WAITING){
+            buttonLeft.drawInstruction(Images.getControlLeft(),canvas);
+            buttonRight.drawInstruction(Images.getControlRight(),canvas);
+        }else{
+            buttonLeft.draw(canvas);
+            buttonRight.draw(canvas);
+        }
+
 
         switch (model.gameState()){
             case GameState.PROCESS:
@@ -93,16 +99,10 @@ public class Render {
                 drawImageIncrease.process(buttonRestart,Images.getWin(),canvas);
                 text(model.lastEvent(),canvas);
                 break;
-            case GameState.WAITING: waiting(canvas); break;
+            case GameState.WAITING: buttonRestart.draw(Images.getRestart(),canvas); break;
         }
 
         //test.process(canvas,model,heightAnimation - 140);
-    }
-
-    private void waiting(Canvas canvas){
-        buttonRestart.draw(Images.getRestart(),canvas);
-        text.drawTextCircle("LEFT",buttonLeft.xCenter(),buttonLeft.yCenter(),buttonLeft.getRadius()/2,buttonLeft.getRadius(),Color.RED,canvas);
-        text.drawTextCircle("RIGHT",buttonRight.xCenter(),buttonRight.yCenter(),buttonLeft.getRadius()/2,buttonLeft.getRadius(),Color.RED,canvas);
     }
 
     private void text(String commit,Canvas canvas){
