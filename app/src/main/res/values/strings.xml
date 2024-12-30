@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">PredatorySnake</string>
+    <string name="level_1">Level_1</string>
+    <string name="level_2">Level_2</string>
+    <string name="level_3">Level_3</string>
+    <string name="level_4">Level_4</string>
+    <string name="level_5">Level_5</string>
+    <string name="level_6">Level_6</string>
 </resources>
